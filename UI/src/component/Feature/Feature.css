@@ -1,0 +1,112 @@
+/* .featured {
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  background-color: #222222;
+  color: white;
+}
+
+.featured .container {
+  width: 1400px;
+  display: flex;
+  align-items: center;
+}
+
+.featured .container .left {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.featured .container .left h1 {
+  font-size: 50px;
+}
+
+.featured .container .left .search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.featured .container .left .search .searchInput {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.featured .container .left .search .searchInput img {
+  width: 20px;
+  height: 20px;
+  margin: 10px;
+}
+
+.featured .container .left .search .searchInput input {
+  border: none;
+  outline: none;
+}
+
+.featured .container .left .search button {
+  width: 120px;
+  height: 50px;
+  border: none;
+  background-color: #0007db;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.featured .container .left .search button:hover {
+  background-color: #2480ff;
+  box-shadow: 4px 4px 8px #c5c5c51f, -4px -4px 8px #ffffff13;
+}
+
+.featured .container .left .popular {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.featured .container .left .popular span {
+}
+
+.featured .container .left .popular button {
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.featured .container .left .popular button:hover {
+  color: #ffffff;
+  background-color: #0007db;
+  border-color: #0007db;
+}
+
+.featured .container .right {
+  height: 100%;
+}
+
+.featured .container .right img {
+  height: 100%;
+  object-fit: contain;
+  animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+} */

@@ -1,0 +1,71 @@
+.email-modal {
+  position: fixed;
+  bottom: 20px;
+  right: 40px;
+  width: 350px;
+  height: 400px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  z-index: 1000;
+  overflow: hidden;
+  animation: slide-up 0.3s ease-out;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.email-modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+}
+
+.email-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.email-modal-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.email-modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+}
+
+.email-modal-close:hover {
+  color: #000;
+}
+
+.email-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 16px;
+}
+
+.email-modal-footer {
+  text-align: right;
+}
+
+.email-modal-footer .ant-btn {
+  width: 100%;
+}
