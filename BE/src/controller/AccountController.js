@@ -10,7 +10,12 @@ const AccountController = {
       await Accounts.findOne({ email: email }).then((account) => {
         if (!account)
           return res.status(404).json({ msg: "Tài Khoản Không Tồn Tại" });
-        // if (account.status == false) return res.status(400).json({ msg: "Tài Khoản Của Bạn Bị Khoá. Vui Lòng Liên Hệ Admin" })
+        console.log(account);
+
+        if (account.isActive == false)
+          return res
+            .status(400)
+            .json({ msg: "Tài Khoản Của Bạn Bị Khoá. Vui Lòng Liên Hệ Admin" });
         if (!bcrypt.compareSync(password, account.password))
           return res.status(300).json({ msg: "Mật Khẩu Không Chính Xác" });
         const token = jwt.sign(
@@ -108,6 +113,19 @@ const AccountController = {
         if (!account)
           return res.status(404).json({ msg: "Tài Khoản Không Tồn Tại" });
         return res.status(200).json(account);
+      });
+    } catch (error) {
+      return res.status(500).json({ msg: "server error" });
+    }
+  },
+  updateInfo: async (req, res, next) => {
+    const _id = req.params.id;
+    const data = req.body;
+    try {
+      await Accounts.findByIdAndUpdate(_id, data).then((account) => {
+        if (!account)
+          return res.status(404).json({ msg: "Tài Khoản Không Tồn Tại" });
+        return res.status(200).json({ msg: "Cập Nhật Thành Công" });
       });
     } catch (error) {
       return res.status(500).json({ msg: "server error" });

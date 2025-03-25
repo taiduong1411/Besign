@@ -1,106 +1,251 @@
-// import React from "react"
+import { Link } from "react-router-dom";
+import { useState } from "react";
+
 export default function Footer() {
-    return (
-        <>
-            <footer className="w-full font-Lexend-content bg-cover bg-[url('https://res.cloudinary.com/dljdvysp7/image/upload/v1715174795/trungduc/Footer/pnngi8a5vgwuaio97s2c.jpg')]">
-                <div className="pt-16 pb-12 text-sm border-t text-white">
-                    <div className="container px-6 mx-auto">
-                        <div className="grid grid-cols-4 gap-6 md:grid-cols-8 lg:grid-cols-12">
-                            <nav
-                                className="col-span-2 md:col-span-4 lg:col-span-4"
-                                aria-labelledby="footer-get-in-touch-3"
-                            >
-                                <h3
-                                    className="mb-6 text-lg font-medium "
-                                    id="footer-get-in-touch-3"
-                                >
-                                    Thông Tin Liên Hệ
-                                </h3>
-                                <ul className="overflow-hidden">
-                                    <li className="mb-4 leading-6">
-                                        <p
-                                            className="transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 flex items-center"
-                                        >
-                                            <img src="https://res.cloudinary.com/dljdvysp7/image/upload/v1715174866/trungduc/Footer/icon/pkadovbjmizjexabtbk8.png" alt="" width={20} height={20} className="mr-3" />
-                                            trungducevent@gmail.com
-                                        </p>
-                                    </li>
-                                    <li className="mb-4 leading-6">
-                                        <a
-                                            href='tel:+84336620023'
-                                            className="transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 flex items-center"
-                                        >
-                                            <img src="https://res.cloudinary.com/dljdvysp7/image/upload/v1715174867/trungduc/Footer/icon/ji9ktaefgw2wnsfc0b6p.png" alt="" width={20} height={20} className="mr-3" />
-                                            033 66 200 23
-                                        </a>
-                                    </li>
-                                    <li className="mb-4 leading-6">
-                                        <a
-                                            href="https://maps.app.goo.gl/gnsN9U5N13P5wJZh6" target="_blank"
-                                            className="transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 flex items-center"
-                                        >
-                                            <img src="https://res.cloudinary.com/dljdvysp7/image/upload/v1715174867/trungduc/Footer/icon/jta6zarczh4bh8cjcjnh.png" alt="" width={20} height={20} className="mr-3" />
-                                            17B, Lê Thị Hồng Gấm, Phường 6, TP. Mỹ Tho, Tiền Giang
-                                        </a>
-                                    </li>
-                                    <li className="mb-4 leading-6">
-                                        <a
+  const [email, setEmail] = useState("");
 
-                                            className="transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 flex items-center"
-                                        >
-                                            <img src="https://res.cloudinary.com/dljdvysp7/image/upload/v1715174867/trungduc/Footer/icon/jta6zarczh4bh8cjcjnh.png" alt="" width={20} height={20} className="mr-3" />
-                                            179, Lương Phú B, Xã Lương Hoà Lạc, Chợ Gạo, Tiền Giang
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <nav
-                                className="col-span-2 md:col-span-4 lg:col-span-4"
-                                aria-labelledby="footer-product-3"
-                            >
-                                <h3
-                                    className="mb-6 text-base font-medium "
-                                    id="footer-product-3"
-                                >
-                                    Hỗ Trợ Khách Hàng
-                                </h3>
-                                <ul>
-                                    <li className="mb-4 leading-6">
-                                        <p className='font-Lexend-title'>Gọi Cho Chúng Tôi :</p>
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    // Handle subscription logic here
+    setEmail("");
+    alert("Thanks for subscribing!");
+  };
 
-                                        <button
-                                            className="bg-red-500 p-3 text-md rounded-xl text-white transition-colors duration-300 hover:bg-red-600 flex items-center mt-2"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-telephone-fill mr-3" viewBox="0 0 16 16">
-                                                <path d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
-                                            </svg>
-                                            <a href='tel: +84336620023'>033 66 200 23</a>
+  return (
+    <footer className="bg-gray-900 text-gray-300">
+      {/* Top wave separator */}
+      <div className="w-full">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 120"
+          className="w-full h-auto fill-gray-900 -mb-1">
+          <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1440,58.7L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+        </svg>
+      </div>
 
-                                        </button>
-                                    </li>
-                                    <li className="mb-2 leading-6">
-                                        <p className='font-Lexend-title'>Liên Hệ Qua Mạng Xã Hội :</p>
-                                        <p
-                                            className="mt-2 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 flex items-center"
-                                        >
-                                            <a href="https://www.facebook.com/profile.php?id=61556739479448" target='_blank'>
-                                                <img src="https://res.cloudinary.com/dljdvysp7/image/upload/v1715174865/trungduc/Footer/icon/hg0ve1gth0cek5moveeu.png" alt="" width={30} height={30} className="mr-3" />
-                                            </a>
-                                            <a href="https://m.me/248290021699610" target='_blank'>
-                                                <img src="https://res.cloudinary.com/dljdvysp7/image/upload/v1715174867/trungduc/Footer/icon/l6d9lwbtucf9j5npy1gk.png" alt="" width={30} height={30} className="mr-3" />
-                                            </a>
-                                            <a href="https://zalo.me/duongtrongtai">
-                                                <img src="https://res.cloudinary.com/dljdvysp7/image/upload/v1715174867/trungduc/Footer/icon/iuhzk4vylm414yl48xbu.png" alt="" width={40} height={40} className="mr-3" />
-                                            </a>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-            {/*    <!-- End Three Columns Footer --> */}
-        </>
-    )
+      {/* Main footer content */}
+      <div className="container mx-auto px-6 py-12">
+        {/* Top section with logo and newsletter */}
+        <div className="flex flex-col md:flex-row items-center justify-between mb-16 border-b border-gray-800 pb-12">
+          <div className="mb-8 md:mb-0">
+            <Link to="/" className="flex items-center">
+              <span className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
+                Besign .
+              </span>
+            </Link>
+            <p className="mt-3 max-w-md text-gray-400">
+              Nền tảng kết nối nhà thiết kế với khách hàng toàn cầu. Khám phá và
+              mua bán thiết kế nghệ thuật độc đáo.
+            </p>
+          </div>
+
+          <div className="w-full md:w-auto">
+            <h3 className="text-lg font-semibold mb-4 text-white">
+              Nhận thông báo mới nhất
+            </h3>
+            <form
+              onSubmit={handleSubscribe}
+              className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email của bạn"
+                className="px-4 py-3 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white w-full"
+                required
+              />
+              <button
+                type="submit"
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium transition-colors w-full sm:w-auto">
+                Đăng ký
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {/* Main footer links */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+          {/* Company */}
+          <div>
+            <h3 className="text-lg font-semibold mb-6 text-white">Công ty</h3>
+            <ul className="space-y-4">
+              {[
+                "Giới thiệu",
+                "Tuyển dụng",
+                "Tin tức",
+                "Khách hàng",
+                "Liên hệ",
+              ].map((item, i) => (
+                <li key={i}>
+                  <Link
+                    to={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
+                    className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Services */}
+          <div>
+            <h3 className="text-lg font-semibold mb-6 text-white">Dịch vụ</h3>
+            <ul className="space-y-4">
+              {[
+                "Thiết kế đồ họa",
+                "Minh họa",
+                "Thiết kế UI/UX",
+                "Thiết kế 3D",
+                "Nhiếp ảnh",
+                "Thiết kế logo",
+              ].map((item, i) => (
+                <li key={i}>
+                  <Link
+                    to={`/service/${item.toLowerCase().replace(/\s+/g, "-")}`}
+                    className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div>
+            <h3 className="text-lg font-semibold mb-6 text-white">Hỗ trợ</h3>
+            <ul className="space-y-4">
+              {[
+                "Câu hỏi thường gặp",
+                "Chính sách bảo mật",
+                "Điều khoản sử dụng",
+                "Giải quyết tranh chấp",
+                "Hướng dẫn",
+              ].map((item, i) => (
+                <li key={i}>
+                  <Link
+                    to={`/support/${item.toLowerCase().replace(/\s+/g, "-")}`}
+                    className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="text-lg font-semibold mb-6 text-white">Liên hệ</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start">
+                <svg
+                  className="h-6 w-6 text-blue-500 mr-3 mt-0.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                <span className="text-gray-400">
+                  17B, Lê Thị Hồng Gấm, Phường 6, TP. Mỹ Tho, Tiền Giang
+                </span>
+              </li>
+              <li className="flex items-center">
+                <svg
+                  className="h-6 w-6 text-blue-500 mr-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
+                <a
+                  href="tel:+84336620023"
+                  className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+                  033 66 200 23
+                </a>
+              </li>
+              <li className="flex items-center">
+                <svg
+                  className="h-6 w-6 text-blue-500 mr-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+                <a
+                  href="mailto:trungducevent@gmail.com"
+                  className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+                  trungducevent@gmail.com
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Social media */}
+        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-gray-800">
+          <p className="text-sm text-gray-500 mb-4 md:mb-0">
+            © {new Date().getFullYear()} ArtMarket. Tất cả quyền được bảo lưu.
+          </p>
+          <div className="flex space-x-6">
+            {[
+              {
+                name: "Facebook",
+                icon: "M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z",
+              },
+              {
+                name: "Instagram",
+                icon: "M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z",
+              },
+              {
+                name: "Twitter",
+                icon: "M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84",
+              },
+              {
+                name: "GitHub",
+                icon: "M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z",
+              },
+              {
+                name: "YouTube",
+                icon: "M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z",
+              },
+            ].map((item) => (
+              <a
+                key={item.name}
+                href="#"
+                className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
+                aria-label={item.name}>
+                <svg
+                  className="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true">
+                  <path d={item.icon} />
+                </svg>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 }

@@ -70,3 +70,7 @@ export const getDataByParams = async (url) => {
   const res = await axiosCli().get(url);
   return res;
 };
+export const updateItem = async (url, data) => {
+  const res = await axiosCli().put(url, data);
+  return res;
+};

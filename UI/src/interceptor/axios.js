@@ -33,7 +33,7 @@ export const axiosCli = () => {
   };
 
   const put = (path, data) => {
-    return api.put(path, data).then((response) => response.data);
+    return api.put(path, data).then((response) => response);
   };
   const del = (path) => {
     return api.delete(path).then((response) => response);

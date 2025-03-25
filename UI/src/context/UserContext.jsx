@@ -28,7 +28,7 @@ export const UserProvider = ({ children }) => {
               setUserData(res.data);
             })
             .catch((err) => {
-              console.error("Error fetching student data", err);
+              console.error("Error fetching user data", err);
             });
         };
         getAccountInfo();

@@ -4,10 +4,10 @@ function useAuth() {
   const accessToken = localStorage.getItem("accessToken");
   if (!accessToken) return accessToken == "0";
   const token = jwtDecode(localStorage.getItem("accessToken"));
-  return token.level;
+  return token.role;
 }
-function AdminRoute() {
+function UserRoute() {
   const isAuth = useAuth();
-  return isAuth == "3" ? <Outlet /> : <Navigate to="/login" />;
+  return isAuth == "1" || isAuth == "2" ? <Outlet /> : <Navigate to="/login" />;
 }
-export default AdminRoute;
+export default UserRoute;

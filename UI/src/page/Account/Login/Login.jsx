@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { axiosCli } from "../../../interceptor/axios";
 import { message } from "antd";
 import { jwtDecode } from "jwt-decode";
+// Import icons
+import { FaEnvelope, FaLock, FaGoogle, FaFacebook } from "react-icons/fa";
+
 function Login() {
   localStorage.removeItem("accessToken");
   const [messageApi, contextHolder] = message.useMessage();
@@ -35,69 +38,102 @@ function Login() {
       });
   };
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen font-Lexend-title">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Đăng Nhập
+    <div className="bg-gradient-to-r from-blue-100 to-purple-100 dark:from-gray-800 dark:to-gray-900 min-h-screen font-Lexend-title flex items-center justify-center">
+      {/* Fixed width container (450px) */}
+      <div className="w-[550px] h-[750px]  m-4">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden transform transition-all hover:scale-[1.01] duration-300 h-full">
+          {/* Header Section with fixed height */}
+          <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-8 text-center h-[140px] flex flex-col justify-center">
+            <h1 className="text-white text-3xl font-bold mb-2">
+              Chào mừng trở lại
             </h1>
+            <p className="text-indigo-100 text-sm">
+              Đăng nhập để truy cập tài khoản của bạn
+            </p>
+          </div>
+
+          {/* Fixed height for the form container */}
+          <div className="p-8 h-[460px]">
             <form
-              className="space-y-4 md:space-y-6"
+              className="space-y-5 h-full flex flex-col"
               onSubmit={handleSubmit(onSubmit)}>
-              <div>
-                <label
-                  htmlFor="phone"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Email
-                </label>
+              {/* Email Field */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaEnvelope className="h-5 w-5 text-indigo-400" />
+                </div>
                 <input
                   type="text"
                   {...register("email")}
                   placeholder="Nhập email..."
                   name="email"
                   id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="pl-10 w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white transition-all duration-200 h-[50px]"
                   required=""
                 />
               </div>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Mật Khẩu
-                </label>
+
+              {/* Password Field */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaLock className="h-5 w-5 text-indigo-400" />
+                </div>
                 <input
                   type="password"
                   {...register("password")}
                   name="password"
                   id="password"
                   placeholder="Nhập Mật Khẩu..."
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="pl-10 w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white transition-all duration-200 h-[50px]"
                   required=""
                 />
               </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-start">
-                  <div className="ml-3 text-sm">
-                    <Link
-                      to="/verify-email"
-                      className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">
-                      Quên mật khẩu ?
-                    </Link>
-                  </div>
-                </div>
+
+              {/* Forgot Password Link */}
+              <div className="flex justify-end">
+                <Link
+                  to="/verify-email"
+                  className="text-sm font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-200">
+                  Quên mật khẩu?
+                </Link>
               </div>
+
+              {/* Login Button */}
               <button
                 type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                Sign in
+                className="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 h-[50px]">
+                Đăng Nhập
               </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Chưa có tài khoản ?{" "}
+
+              {/* Social Login Divider */}
+              <div className="relative flex items-center justify-center my-4">
+                <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                <div className="px-3 bg-white dark:bg-gray-800 text-sm text-gray-500 dark:text-gray-400 w-full">
+                  hoặc đăng nhập với
+                </div>
+                <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+              </div>
+
+              {/* Social Login Buttons */}
+              <div className="flex justify-center space-x-4">
+                <button
+                  type="button"
+                  className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200">
+                  <FaGoogle className="h-5 w-5 text-red-500" />
+                </button>
+                <button
+                  type="button"
+                  className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200">
+                  <FaFacebook className="h-5 w-5 text-blue-600" />
+                </button>
+              </div>
+
+              {/* Sign Up Link - auto margins to push it to bottom */}
+              <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-auto">
+                Chưa có tài khoản?{" "}
                 <Link
                   to="/register"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500">
+                  className="font-semibold text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-200">
                   Đăng ký tài khoản
                 </Link>
               </p>

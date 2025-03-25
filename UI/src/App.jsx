@@ -3,7 +3,6 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Route
 import AdminRoute from "./route/AdminRoute";
-
 import Home from "./page/Home/Home";
 import ContactUs from "./page/User/ContactUs/ContactUs";
 import Login from "./page/Account/Login/Login";
@@ -18,6 +17,8 @@ import Contact from "./page/Admin/Contact/Contact";
 import VerifyEmail from "./page/Account/VerifyEmail/VeriyEmail";
 import ResetPassword from "./page/Account/ResetPassword/ResetPassword";
 import UpdateProfile from "./page/Account/UpdateInfomation/UpdateProfile";
+import RegisterSeller from "./page/User/RegisterSeller/RegisterSeller";
+import SellerApproval from "./page/Admin/Seller/SellerApproval";
 function App() {
   return (
     <BrowserRouter>
@@ -33,10 +34,12 @@ function App() {
         <Route path="/news/:slug" element={<NewsDetail />} />
         <Route path="/news/tag/:query" element={<NewsByHashtag />} />
         <Route path="/all-news/" element={<AllNews />} />
+        <Route path="/become-seller/" element={<RegisterSeller />} />
         <Route exact path="/" element={<AdminRoute />}>
           <Route path="/admin/dashboard" element={<DashBoard />} />
           <Route path="/admin/news-manager" element={<News />} />
-          <Route path="/admin/khach-hang-lien-he" element={<Contact />} />
+          <Route path="/admin/customer-contact" element={<Contact />} />
+          <Route path="/admin/seller-approval" element={<SellerApproval />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -3,13 +3,15 @@ import { axiosCli } from "../../../interceptor/axios";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+// Import icons
+import { FaLock, FaShieldAlt, FaHistory } from "react-icons/fa";
 
 function ResetPassword() {
   const [messageApi, contextHolder] = message.useMessage();
   const key = "updatable";
   const nav = useNavigate();
   const { register, handleSubmit } = useForm();
-  const [timeLeft, setTimeLeft] = useState(10); // 5 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(10); // 10 seconds timer
   const [otpExpired, setOtpExpired] = useState(false);
 
   useEffect(() => {
@@ -95,84 +97,102 @@ function ResetPassword() {
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+    <div className="bg-gradient-to-r from-blue-100 to-purple-100 dark:from-gray-800 dark:to-gray-900 min-h-screen font-Lexend-title flex items-center justify-center">
+      {/* Fixed width container */}
+      <div className="w-[450px] h-auto m-4">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden transform transition-all hover:scale-[1.01] duration-300 h-full">
+          {/* Header Section */}
+          <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-8 text-center h-[140px] flex flex-col justify-center">
+            <h1 className="text-white text-3xl font-bold mb-2">
               Đặt Lại Mật Khẩu
             </h1>
-            <form
-              className="space-y-4 md:space-y-6"
-              onSubmit={handleSubmit(onSubmit)}>
-              <div>
-                <label
-                  htmlFor="newPassword"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Mật Khẩu Mới
-                </label>
+            <p className="text-indigo-100 text-sm">
+              Vui lòng nhập mật khẩu mới và mã xác thực
+            </p>
+          </div>
+
+          <div className="p-8">
+            <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+              {/* New Password Field */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaLock className="h-5 w-5 text-indigo-400" />
+                </div>
                 <input
                   type="password"
                   {...register("password")}
                   placeholder="Nhập mật khẩu mới..."
                   name="password"
                   id="password"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="pl-10 w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white transition-all duration-200 h-[50px]"
                   required={true}
                 />
               </div>
-              <div>
-                <label
-                  htmlFor="confirmPassword"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Xác Nhận Mật Khẩu
-                </label>
+
+              {/* Confirm Password Field */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaLock className="h-5 w-5 text-indigo-400" />
+                </div>
                 <input
                   type="password"
                   {...register("confirmPassword")}
                   placeholder="Nhập lại mật khẩu mới..."
                   name="confirmPassword"
                   id="confirmPassword"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="pl-10 w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white transition-all duration-200 h-[50px]"
                   required={true}
                 />
               </div>
-              <div>
-                <label
-                  htmlFor="code"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Mã Xác Thực
-                </label>
+
+              {/* Verification Code Field */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaShieldAlt className="h-5 w-5 text-indigo-400" />
+                </div>
                 <input
                   type="text"
                   {...register("code")}
                   placeholder="Nhập mã xác thực..."
                   name="code"
                   id="code"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="pl-10 w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white transition-all duration-200 h-[50px]"
                   required={true}
                 />
               </div>
+
+              {/* Timer Section */}
               {!otpExpired && (
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  Mã xác thực sẽ hết hạn sau: {formatTime(timeLeft)}
+                <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 bg-indigo-50 dark:bg-gray-700 p-3 rounded-lg">
+                  <FaHistory className="h-4 w-4 text-indigo-500 mr-2" />
+                  <span>
+                    Mã xác thực sẽ hết hạn sau:{" "}
+                    <span className="font-medium text-indigo-600 dark:text-indigo-400">
+                      {formatTime(timeLeft)}
+                    </span>
+                  </span>
                 </div>
               )}
+
+              {/* Expired OTP Message */}
               {otpExpired && (
-                <div className="text-sm text-red-500 dark:text-red-400">
-                  Mã xác thực đã hết hạn.{" "}
+                <div className="flex items-center text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-gray-700 p-3 rounded-lg">
+                  <FaHistory className="h-4 w-4 text-red-500 mr-2" />
+                  <span>Mã xác thực đã hết hạn. </span>
                   <button
                     type="button"
                     onClick={resendOtp}
-                    className="text-blue-500 hover:underline">
+                    className="ml-1 font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-200">
                     Gửi lại mã
                   </button>
                 </div>
               )}
+
+              {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                Gửi
+                className="w-full py-3 px-4 mt-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 h-[50px]">
+                Xác Nhận
               </button>
             </form>
           </div>

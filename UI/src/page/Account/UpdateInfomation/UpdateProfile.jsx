@@ -9,7 +9,7 @@ import upload from "../../../utils/upload";
 import { UserContext } from "../../../context/UserContext";
 // import Message from "../../../components/Popup/Message";
 function UpdateProfile() {
-  const { studentData, updateStudentData } = useContext(UserContext);
+  const { studentData } = useContext(UserContext);
   const [avatarUrl, setAvatarUrl] = useState(null);
   // const [studentId, setStudentId] = useState("");
   useEffect(() => {
