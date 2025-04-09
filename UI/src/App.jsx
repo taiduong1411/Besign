@@ -3,6 +3,9 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Route
 import AdminRoute from "./route/AdminRoute";
+import SellerRoute from "./route/SellerRoute";
+import UserRoute from "./route/UserRoute";
+// Page
 import Home from "./page/Home/Home";
 import ContactUs from "./page/User/ContactUs/ContactUs";
 import Login from "./page/Account/Login/Login";
@@ -19,6 +22,9 @@ import ResetPassword from "./page/Account/ResetPassword/ResetPassword";
 import UpdateProfile from "./page/Account/UpdateInfomation/UpdateProfile";
 import RegisterSeller from "./page/User/RegisterSeller/RegisterSeller";
 import SellerApproval from "./page/Admin/Seller/SellerApproval";
+import DashBoardSeller from "./page/Seller/Dashboard/DashboardSeller";
+import Products from "./page/Seller/Products/Products";
+import CustomerChat from "./page/Seller/Customer/CustomerChat";
 function App() {
   return (
     <BrowserRouter>
@@ -34,7 +40,17 @@ function App() {
         <Route path="/news/:slug" element={<NewsDetail />} />
         <Route path="/news/tag/:query" element={<NewsByHashtag />} />
         <Route path="/all-news/" element={<AllNews />} />
-        <Route path="/become-seller/" element={<RegisterSeller />} />
+        {/* Only User */}
+        <Route exact path="/" element={<UserRoute />}>
+          <Route path="/become-seller/" element={<RegisterSeller />} />
+        </Route>
+        {/* Only Seller */}
+        <Route exact path="/" element={<SellerRoute />}>
+          <Route path="seller/dashboard" element={<DashBoardSeller />} />
+          <Route path="seller/products-manager" element={<Products />} />
+          <Route path="seller/customer-chat" element={<CustomerChat />} />
+        </Route>
+        {/* Only Admin */}
         <Route exact path="/" element={<AdminRoute />}>
           <Route path="/admin/dashboard" element={<DashBoard />} />
           <Route path="/admin/news-manager" element={<News />} />

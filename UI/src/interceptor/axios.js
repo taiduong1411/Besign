@@ -38,10 +38,14 @@ export const axiosCli = () => {
   const del = (path) => {
     return api.delete(path).then((response) => response);
   };
+  const patch = (path, data) => {
+    return api.patch(path, data).then((response) => response);
+  };
   return {
     get,
     post,
     put,
     del,
+    patch,
   };
 };

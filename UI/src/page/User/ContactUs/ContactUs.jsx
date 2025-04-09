@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import Footer from "../../../component/Footer/Footer";
 import Navbar from "../../../component/Header/Navbar";
 import Lenis from "lenis";
@@ -6,8 +6,9 @@ import { useForm } from "react-hook-form";
 import { addItems } from "../../../utils/service";
 import Message from "../../../component/Message/Message";
 import { motion } from "framer-motion";
-
+import { UserContext } from "../../../context/UserContext";
 function ContactUs() {
+  const { userData } = useContext(UserContext);
   const formRef = useRef(null);
   const [formStatus, setFormStatus] = useState("idle"); // idle, submitting, success, error
   const [msg, setMsg] = useState({
@@ -413,6 +414,7 @@ function ContactUs() {
                           <input
                             type="text"
                             id="fullname"
+                            defaultValue={userData?.fullname}
                             placeholder="Nhập họ và tên của bạn"
                             {...register("fullname", {
                               required: "Vui lòng nhập họ và tên",
@@ -455,6 +457,7 @@ function ContactUs() {
                           <input
                             type="email"
                             id="email"
+                            defaultValue={userData?.email}
                             placeholder="tên@example.com"
                             {...register("email", {
                               pattern: {
@@ -502,6 +505,7 @@ function ContactUs() {
                         <input
                           type="tel"
                           id="phone"
+                          defaultValue={userData?.phone}
                           placeholder="Nhập số điện thoại của bạn"
                           {...register("phone", {
                             required: "Vui lòng nhập số điện thoại",

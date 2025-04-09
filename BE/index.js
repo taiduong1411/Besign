@@ -68,12 +68,15 @@ const accountRoute = require("./src/router/AccountRoute");
 const newsRoute = require("./src/router/NewsRoute");
 const userRoute = require("./src/router/UserRoute");
 const contactRoute = require("./src/router/ContactRoute");
+const sellerRoute = require("./src/router/SellerRoute");
+
 // API
 app.use("/api/admin", adminRoute);
 app.use("/api/account", accountRoute);
 app.use("/api/news", newsRoute);
 app.use("/api/user", userRoute);
 app.use("/api/contact", contactRoute);
+app.use("/api/seller", sellerRoute);
 
 httpServer.listen(port, () => {
   console.log(`Server running on port ${port}`);

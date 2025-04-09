@@ -26,8 +26,7 @@ function Login() {
           let userInfo = jwtDecode(localStorage.getItem("accessToken"));
           if (userInfo.level == "3")
             return (window.location.href = "/admin/dashboard");
-          if (userInfo.level == "2")
-            return (window.location.href = "/admin/dashboard");
+          if (userInfo.level == "2") return (window.location.href = "/");
           if (userInfo.level == "1") return (window.location.href = "/");
         } else {
           messageApi.open({

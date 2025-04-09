@@ -74,3 +74,7 @@ export const updateItem = async (url, data) => {
   const res = await axiosCli().put(url, data);
   return res;
 };
+export const patchItem = async (url, data) => {
+  const res = await axiosCli().patch(url, data);
+  return res;
+};

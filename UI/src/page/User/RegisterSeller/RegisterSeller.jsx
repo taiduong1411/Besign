@@ -1,7 +1,8 @@
 import Footer from "../../../component/Footer/Footer";
 import Navbar from "../../../component/Header/Navbar";
 import Lenis from "lenis";
-import { useState, useEffect } from "react";
+import { UserContext } from "../../../context/UserContext";
+import { useState, useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { addItems } from "../../../utils/service";
 import Message from "../../../component/Message/Message";
@@ -16,6 +17,7 @@ import {
 } from "react-icons/fa";
 
 function RegisterSeller() {
+  const { userData } = useContext(UserContext);
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -179,6 +181,7 @@ function RegisterSeller() {
                             required: "Vui lòng nhập họ và tên",
                           })}
                           type="text"
+                          defaultValue={userData?.fullname}
                           className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                           placeholder="Nguyễn Văn A"
                         />
@@ -207,6 +210,7 @@ function RegisterSeller() {
                             },
                           })}
                           type="email"
+                          defaultValue={userData?.email}
                           className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                           placeholder="email@example.com"
                         />
@@ -235,6 +239,7 @@ function RegisterSeller() {
                             },
                           })}
                           type="tel"
+                          defaultValue={userData?.phone}
                           className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                           placeholder="0912345678"
                         />
@@ -331,6 +336,7 @@ function RegisterSeller() {
                             required: "Vui lòng nhập địa chỉ",
                           })}
                           type="text"
+                          defaultValue={userData?.address}
                           className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                           placeholder="123 Đường ABC, Quận XYZ, TP. HCM"
                         />

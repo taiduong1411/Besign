@@ -121,10 +121,17 @@ const AccountController = {
   updateInfo: async (req, res, next) => {
     const _id = req.params.id;
     const data = req.body;
+    const hash = bcrypt.hashSync(data.password, 5);
+    const dataUpdate = {
+      ...data,
+      password: hash,
+    };
+
     try {
-      await Accounts.findByIdAndUpdate(_id, data).then((account) => {
+      await Accounts.findByIdAndUpdate(_id, dataUpdate).then((account) => {
         if (!account)
           return res.status(404).json({ msg: "Tài Khoản Không Tồn Tại" });
+
         return res.status(200).json({ msg: "Cập Nhật Thành Công" });
       });
     } catch (error) {

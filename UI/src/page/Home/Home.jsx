@@ -1209,11 +1209,12 @@ function Home() {
                 <div className="px-6 pb-6 text-gray-600 dark:text-gray-300">
                   <p>
                     Để trở thành người bán, hãy tạo một tài khoản và nhấp vào
-                    "Trở thành người bán" trong bảng điều khiển của bạn. Hoàn
-                    thành hồ sơ của bạn, gửi các mẫu công việc của bạn để xem
-                    xét, và sau khi được chấp thuận, bạn có thể bắt đầu tải lên
-                    và bán tác phẩm nghệ thuật của mình. Đội ngũ của chúng tôi
-                    xem xét các đơn đăng ký để đảm bảo tiêu chuẩn chất lượng.
+                    &ldquo;Trở thành người bán&rdquo; trong bảng điều khiển của
+                    bạn. Hoàn thành hồ sơ của bạn, gửi các mẫu công việc của bạn
+                    để xem xét, và sau khi được chấp thuận, bạn có thể bắt đầu
+                    tải lên và bán tác phẩm nghệ thuật của mình. Đội ngũ của
+                    chúng tôi xem xét các đơn đăng ký để đảm bảo tiêu chuẩn chất
+                    lượng.
                   </p>
                 </div>
               </details>

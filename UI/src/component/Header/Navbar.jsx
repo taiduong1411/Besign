@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./header.css";
-import { Dropdown, Avatar, Menu, Modal } from "antd";
+import { Dropdown, Avatar, Menu, Modal, message } from "antd";
 import {
   DownOutlined,
   UserOutlined,
@@ -18,8 +18,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const { userData } = useContext(UserContext);
-  console.log(userData);
-
   const [isOpen, setIsOpen] = useState(false);
   const [navScroll, setNav] = useState(false);
   const [updateProfileModal, setUpdateProfileModal] = useState(false);
@@ -65,9 +63,13 @@ const Navbar = () => {
     try {
       const cloud = await upload(file, "Firver/avatar");
       const data = {
-        ...dataForm,
-        avatar: cloud.url,
+        fullname: dataForm.fullname,
+        phone: dataForm.phone,
+        address: dataForm.address,
+        avatar: cloud ? cloud.url : userData.avatar,
+        password: dataForm.password ? dataForm.password : userData.password,
       };
+      console.log(data);
       const response = await addItems(
         `account/update-information/${userData._id}`,
         data
@@ -78,6 +80,7 @@ const Navbar = () => {
       } else {
         console.log(response.error);
         // Show error notification
+        message.error(response.error);
       }
     } catch (error) {
       console.error("Update failed:", error);
@@ -88,8 +91,13 @@ const Navbar = () => {
   const menuItems = [
     {
       key: "0",
-      icon: <HistoryOutlined />,
-      label: <Link to="/login">Lịch sử đơn hàng</Link>,
+      icon: userData && userData.level == "1" ? <HistoryOutlined /> : "",
+      label:
+        userData && userData.level == "1" ? (
+          <Link to="/become-seller">Trở thành người bán</Link>
+        ) : (
+          <Link to=""></Link>
+        ),
     },
     {
       key: "1",
@@ -98,7 +106,7 @@ const Navbar = () => {
         userData && userData.level == "1" ? (
           <Link to="/become-seller">Trở thành người bán</Link>
         ) : (
-          <Link to="/my-shop">Cửa hàng của tôi</Link>
+          <Link to="/seller/dashboard">Quản lý cửa hàng</Link>
         ),
     },
     {
@@ -389,6 +397,7 @@ const Navbar = () => {
                   required: "Vui lòng nhập họ và tên",
                 })}
                 placeholder="Nhập họ và tên..."
+                defaultValue={userData?.fullname}
                 id="fullname"
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               />
@@ -412,6 +421,7 @@ const Navbar = () => {
                 })}
                 placeholder="Nhập số điện thoại..."
                 id="phone"
+                defaultValue={userData?.phone}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               />
               {errors.phone && (
@@ -432,6 +442,7 @@ const Navbar = () => {
                 {...register("address", { required: "Vui lòng nhập địa chỉ" })}
                 placeholder="Nhập địa chỉ của bạn..."
                 id="address"
+                defaultValue={userData?.address}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               />
               {errors.address && (
