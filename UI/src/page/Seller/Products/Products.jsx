@@ -323,7 +323,7 @@ function Products() {
     getDataProducts();
   }, []);
 
-  const [dataNews, setDataNews] = useState([]);
+  const [dataProducts, setdataProducts] = useState([]);
   const [filteredNews, setFilteredNews] = useState([]);
 
   // Simulate loading state
@@ -335,14 +335,14 @@ function Products() {
 
   const getDataProducts = async () => {
     setLoading(true);
-    await getItems("seller/all-products")
+    await getItems("seller/seller-products")
       .then((res) => {
         setMsg({
           type: res.status == 200 ? "success" : "error",
           content: res.data != undefined ? res.data.msg : res.error,
           hidden: res.data != undefined ? true : false,
         });
-        setDataNews(res.data);
+        setdataProducts(res.data);
         setFilteredNews(res.data);
         setLoading(false);
       })
@@ -354,7 +354,7 @@ function Products() {
 
   useEffect(() => {
     if (searchValue) {
-      let filtered = dataNews.filter(
+      let filtered = dataProducts.filter(
         (news) =>
           news.product_name
             ?.toLowerCase()
@@ -373,18 +373,18 @@ function Products() {
     } else {
       // Only apply status filter when no search
       if (filterStatus === "all") {
-        setFilteredNews(dataNews);
+        setFilteredNews(dataProducts);
       } else if (filterStatus === "public") {
         setFilteredNews(
-          dataNews.filter((product) => product.isPublic === true)
+          dataProducts.filter((product) => product.isPublic === true)
         );
       } else if (filterStatus === "private") {
         setFilteredNews(
-          dataNews.filter((product) => product.isPublic === false)
+          dataProducts.filter((product) => product.isPublic === false)
         );
       }
     }
-  }, [searchValue, dataNews, filterStatus]);
+  }, [searchValue, dataProducts, filterStatus]);
 
   // handle add news
   const [addOpen, setAddOpen] = useState(false);
@@ -588,8 +588,8 @@ function Products() {
     setCurrentProductId(null);
   };
 
-  // handle del news
-  const [newsId, setNewsId] = useState({});
+  // handle del products
+  const [productID, setproductID] = useState({});
 
   const showDel = async (e) => {
     e.stopPropagation();
@@ -599,7 +599,7 @@ function Products() {
       img: e.currentTarget.dataset.img,
     };
 
-    setNewsId(data);
+    setproductID(data);
     setDelOpen(true);
   };
 
@@ -608,12 +608,14 @@ function Products() {
     setLoading(true);
 
     try {
-      const response = await delById(`seller/delete-product/${newsId._id}`);
+      const response = await delById(`seller/delete-product/${productID._id}`);
 
       if (response && response.status === 200) {
         // Update local state after deletion
-        const updatedData = dataNews.filter((item) => item._id !== newsId._id);
-        setDataNews(updatedData);
+        const updatedData = dataProducts.filter(
+          (item) => item._id !== productID._id
+        );
+        setdataProducts(updatedData);
         setFilteredNews(updatedData);
 
         message.success(
@@ -640,15 +642,15 @@ function Products() {
   };
 
   // Statistics calculations
-  const publicProductsCount = dataNews.filter(
+  const publicProductsCount = dataProducts.filter(
     (product) => product.isPublic
   ).length;
-  const privateProductsCount = dataNews.filter(
+  const privateProductsCount = dataProducts.filter(
     (product) => !product.isPublic
   ).length;
   const publicPercentage =
-    dataNews.length > 0
-      ? Math.round((publicProductsCount / dataNews.length) * 100)
+    dataProducts.length > 0
+      ? Math.round((publicProductsCount / dataProducts.length) * 100)
       : 0;
 
   // Handle product preview
@@ -664,16 +666,16 @@ function Products() {
       const newStatus = !record.isPublic;
 
       // Make API call to update status
-      await patchItem(`seller/update-product-status/${record._id}`, {
+      await addItems(`seller/update-product-status/${record._id}`, {
         isPublic: newStatus,
       });
 
       // Update local state
-      const updatedData = dataNews.map((item) =>
+      const updatedData = dataProducts.map((item) =>
         item._id === record._id ? { ...item, isPublic: newStatus } : item
       );
 
-      setDataNews(updatedData);
+      setdataProducts(updatedData);
       setFilteredNews(updatedData);
       message.success(
         `Sản phẩm đã chuyển sang trạng thái ${newStatus ? "Public" : "Private"}`
@@ -802,7 +804,7 @@ function Products() {
                       <FileTextOutlined className="text-blue-500" />
                       Quản Lý Sản Phẩm
                       <Badge
-                        count={dataNews.length}
+                        count={dataProducts.length}
                         style={{
                           backgroundColor: "#3b82f6",
                           marginLeft: "8px",
@@ -842,7 +844,7 @@ function Products() {
                           Tổng sản phẩm
                         </Text>
                         <Title level={3} className="!m-0">
-                          {dataNews.length}
+                          {dataProducts.length}
                         </Title>
                       </div>
                     </div>
@@ -1532,7 +1534,7 @@ function Products() {
                     onClick={() => {
                       setSelectedProduct(null);
                       setPreviewOpen(false);
-                      setNewsId({
+                      setproductID({
                         _id: selectedProduct._id,
                         title: selectedProduct.product_name,
                         img: selectedProduct.product_image[0]?.url,
@@ -1579,17 +1581,17 @@ function Products() {
         <div className="py-4">
           <div className="flex items-center mb-4">
             <Avatar
-              src={newsId.img}
+              src={productID.img}
               size={48}
               shape="square"
               className="rounded-lg mr-3"
             />
             <div>
               <Text strong className="block">
-                {newsId.title}
+                {productID.title}
               </Text>
               <Text type="secondary" className="text-xs">
-                ID: {newsId._id}
+                ID: {productID._id}
               </Text>
             </div>
           </div>

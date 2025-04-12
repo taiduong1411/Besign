@@ -69,7 +69,9 @@ const newsRoute = require("./src/router/NewsRoute");
 const userRoute = require("./src/router/UserRoute");
 const contactRoute = require("./src/router/ContactRoute");
 const sellerRoute = require("./src/router/SellerRoute");
-
+const reviewRoute = require("./src/router/ReviewRoute");
+const productRoute = require("./src/router/ProductRoute");
+const chatRoute = require("./src/router/ChatRouter");
 // API
 app.use("/api/admin", adminRoute);
 app.use("/api/account", accountRoute);
@@ -77,6 +79,15 @@ app.use("/api/news", newsRoute);
 app.use("/api/user", userRoute);
 app.use("/api/contact", contactRoute);
 app.use("/api/seller", sellerRoute);
+app.use("/api/reviews", reviewRoute);
+app.use("/api/product", productRoute);
+app.use("/api/chat", chatRoute);
+
+// Import controller nếu chưa có
+const ChatController = require("./src/controller/ChatController");
+
+// Thêm route lấy user theo email (đặt ở cùng khu vực với các API routes khác)
+app.get("/api/accounts/by-email/:email", ChatController.getUserByEmail);
 
 httpServer.listen(port, () => {
   console.log(`Server running on port ${port}`);

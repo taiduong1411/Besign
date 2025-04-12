@@ -8,6 +8,6 @@ function useAuth() {
 }
 function UserRoute() {
   const isAuth = useAuth();
-  return isAuth == "1" || isAuth == "2" ? <Outlet /> : <Navigate to="/login" />;
+  return isAuth == "1" ? <Outlet /> : <Navigate to="/login" />;
 }
 export default UserRoute;

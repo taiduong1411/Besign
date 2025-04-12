@@ -1,15 +1,132 @@
 const Products = require("../model/product");
 const Accounts = require("../model/account");
 const jwt_decode = require("../services/tokenDecode");
+const mongoose = require("mongoose");
+
 const SellerController = {
-  getAllProducts: async (req, res, next) => {
+  // Trang seller
+  getAllProductsBySeller: async (req, res, next) => {
+    const token = jwt_decode.decodeToken(req.headers["authorization"]);
+    const seller = await Accounts.findOne({ _id: token._id });
     try {
-      const products = await Products.find();
+      const products = await Products.find({ seller_email: seller.email });
       res.status(200).json(products);
     } catch (err) {
       res.status(500).json(err);
     }
   },
+  // Trang home
+  getAllProducts: async (req, res, next) => {
+    try {
+      const products = await Products.find();
+      const rating = await Products.aggregate([
+        {
+          $lookup: {
+            from: "reviews",
+            localField: "_id",
+            foreignField: "product_id",
+            as: "reviews",
+          },
+        },
+        {
+          $addFields: {
+            averageRating: {
+              $avg: "$reviews.rating",
+            },
+            reviewCount: {
+              $size: "$reviews", // Count the number of reviews
+            },
+          },
+        },
+      ]);
+
+      res.status(200).json(rating);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
+  getPublicProducts: async (req, res) => {
+    try {
+      // Find all products that are public (isPublic: true)
+      const products = await Products.find({ isPublic: true })
+        .sort({ createdAt: -1 }) // Sort by newest first
+        .limit(20); // Limit to 20 products initially
+
+      if (!products || products.length === 0) {
+        return res.status(200).json([]); // Return empty array instead of 404
+      }
+
+      return res.status(200).json(products);
+    } catch (error) {
+      console.error("Error fetching public products:", error);
+      return res.status(500).json({
+        msg: "Lỗi khi tải danh sách sản phẩm",
+        error: error.message,
+      });
+    }
+  },
+
+  getProductById: async (req, res) => {
+    try {
+      const productId = req.params.id;
+      const product = await Products.findById(productId);
+
+      if (!product) {
+        return res.status(404).json({
+          msg: "Không tìm thấy sản phẩm",
+        });
+      }
+
+      // Get reviews data for this product if Reviews model is available
+      let reviewSummary = {
+        totalReviews: 0,
+        averageRating: 0,
+      };
+
+      try {
+        // Only try to get reviews if the Reviews model exists
+        if (mongoose.models.Review) {
+          const Reviews = mongoose.models.Review;
+          const reviews = await Reviews.find({
+            product_id: productId,
+            is_approved: true,
+          });
+
+          if (reviews && reviews.length > 0) {
+            const totalReviews = reviews.length;
+            const totalRating = reviews.reduce(
+              (sum, review) => sum + review.rating,
+              0
+            );
+            const averageRating = totalRating / totalReviews;
+
+            reviewSummary = {
+              totalReviews,
+              averageRating: parseFloat(averageRating.toFixed(1)),
+            };
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching review data:", error);
+        // Continue without review data if there's an error
+      }
+
+      // Add review summary to the product data
+      const productWithReviews = {
+        ...product.toJSON(),
+        reviews: reviewSummary,
+      };
+
+      return res.status(200).json(productWithReviews);
+    } catch (error) {
+      console.error("Error fetching product:", error);
+      return res.status(500).json({
+        msg: "Lỗi khi tải thông tin sản phẩm",
+      });
+    }
+  },
+
   createProduct: async (req, res) => {
     const data = req.body;
     const token = jwt_decode.decodeToken(req.headers["authorization"]);
@@ -97,6 +214,7 @@ const SellerController = {
     try {
       const productId = req.params.id;
       const { isPublic } = req.body;
+
       const token = jwt_decode.decodeToken(req.headers["authorization"]);
       const seller = await Accounts.findOne({ _id: token._id });
 

@@ -7,9 +7,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Lenis from "lenis";
 import { useEffect, useRef, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { Button } from "antd";
-// import StickyBox from "react-sticky-box";
+
 import { axiosCli } from "../../interceptor/axios";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
@@ -23,14 +21,6 @@ import {
   FaCalendarAlt,
   FaUsers,
 } from "react-icons/fa";
-// Import GSAP and its plugins
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { useGSAP } from "@gsap/react";
-
-// Register GSAP plugins
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 function Home() {
   // Create a ref for the Lenis instance
@@ -42,387 +32,8 @@ function Home() {
   const serviceCardsRef = useRef([]);
   const whyUsImageRef = useRef(null);
   const faqItemsRef = useRef([]);
-  const newsGridRef = useRef(null);
   const introSectionRef = useRef(null);
   const newsletterRef = useRef(null);
-
-  // GSAP animations
-  useGSAP(() => {
-    // Hero section parallax effect
-    if (heroRef.current) {
-      const heroElement = heroRef.current;
-
-      // Create a parallax effect for the hero section
-      gsap.to(heroElement, {
-        scrollTrigger: {
-          trigger: heroElement,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-        y: () => -ScrollTrigger.maxScroll(window) * 0.1,
-        ease: "none",
-      });
-
-      // Animate hero content in 3D space
-      const heroContent = heroElement.querySelector(".hero-content");
-      if (heroContent) {
-        gsap.from(heroContent, {
-          duration: 1.5,
-          opacity: 0,
-          y: 50,
-          rotationX: 15,
-          transformPerspective: 1000,
-          ease: "power3.out",
-        });
-      }
-
-      // Enhance the floating particles animation
-      const particles = heroElement.querySelectorAll(".absolute.rounded-full");
-      particles.forEach((particle) => {
-        gsap.to(particle, {
-          scrollTrigger: {
-            trigger: heroElement,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1,
-          },
-          y: `random(-100, 100)`,
-          x: `random(-50, 50)`,
-          rotation: `random(-45, 45)`,
-          scale: `random(0.8, 1.5)`,
-          opacity: `random(0.1, 0.3)`,
-        });
-      });
-    }
-
-    // Intro Section animation
-    if (introSectionRef.current) {
-      const introElement = introSectionRef.current;
-
-      // Create a scroll-triggered background animation
-      gsap.fromTo(
-        introElement,
-        { backgroundPosition: "0% 0%" },
-        {
-          scrollTrigger: {
-            trigger: introElement,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-          },
-          backgroundPosition: "100% 100%",
-          ease: "none",
-        }
-      );
-    }
-
-    // 3D card animation for service cards
-    if (serviceCardsRef.current.length) {
-      serviceCardsRef.current.forEach((card, index) => {
-        // Initial set
-        gsap.set(card, {
-          transformStyle: "preserve-3d",
-          transformPerspective: 1000,
-        });
-
-        // Card reveal animation
-        gsap.from(card, {
-          scrollTrigger: {
-            trigger: card,
-            start: "top bottom-=100",
-            toggleActions: "play none none reverse",
-          },
-          opacity: 0,
-          y: 60,
-          rotationX: 15,
-          rotationY: -5,
-          duration: 0.8,
-          delay: index * 0.1,
-          ease: "power3.out",
-        });
-
-        // Card hover effect
-        card.addEventListener("mouseenter", () => {
-          gsap.to(card, {
-            rotationY: 5,
-            rotationX: -5,
-            y: -10,
-            scale: 1.02,
-            boxShadow: "0 20px 30px rgba(0,0,0,0.1)",
-            duration: 0.4,
-            ease: "power2.out",
-          });
-        });
-
-        card.addEventListener("mouseleave", () => {
-          gsap.to(card, {
-            rotationY: 0,
-            rotationX: 0,
-            y: 0,
-            scale: 1,
-            boxShadow: "0 10px 20px rgba(0,0,0,0.05)",
-            duration: 0.4,
-            ease: "power2.out",
-          });
-        });
-
-        // Add subtle continuous animation to the check icons
-        const checkIcons = card.querySelectorAll(".text-green-500");
-        checkIcons.forEach((icon, i) => {
-          gsap.to(icon, {
-            y: 3,
-            rotation: 5,
-            duration: 1.5,
-            ease: "sine.inOut",
-            repeat: -1,
-            yoyo: true,
-            delay: i * 0.2,
-          });
-        });
-      });
-    }
-
-    // Why Us section 3D image animation
-    if (whyUsImageRef.current) {
-      const imgWrapper = whyUsImageRef.current;
-
-      // Create floating effect
-      gsap.to(imgWrapper, {
-        y: 20,
-        rotation: 1,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "power1.inOut",
-      });
-
-      // Create scroll-based parallax
-      gsap.fromTo(
-        imgWrapper,
-        { y: 50, opacity: 0.5, scale: 0.9, rotationY: -15 },
-        {
-          scrollTrigger: {
-            trigger: whyUsRef.current,
-            start: "top bottom",
-            end: "center center",
-            scrub: 1,
-          },
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          rotationY: 0,
-          ease: "power2.out",
-        }
-      );
-
-      // Add animation to the gradient background
-      const gradientBg = imgWrapper.querySelector(".absolute");
-      if (gradientBg) {
-        gsap.to(gradientBg, {
-          scrollTrigger: {
-            trigger: whyUsRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-          },
-          opacity: 0.5,
-          scale: 1.1,
-          rotation: 10,
-          duration: 1,
-        });
-      }
-    }
-
-    // Animate FAQ items with staggered effect
-    if (faqItemsRef.current.length) {
-      faqItemsRef.current.forEach((faqItem) => {
-        const summary = faqItem.querySelector("summary");
-        const content = faqItem.querySelector("div");
-
-        // Create click animation for summary
-        if (summary) {
-          summary.addEventListener("click", () => {
-            const isOpen = faqItem.querySelector("details").open;
-            if (!isOpen) {
-              gsap.from(content, {
-                height: 0,
-                opacity: 0,
-                paddingTop: 0,
-                paddingBottom: 0,
-                duration: 0.5,
-                ease: "power2.out",
-              });
-            }
-          });
-        }
-
-        // Create scroll animation
-        gsap.fromTo(
-          faqItem,
-          {
-            y: 30,
-            opacity: 0,
-            transformOrigin: "left center",
-            rotationY: -5,
-          },
-          {
-            scrollTrigger: {
-              trigger: faqItem,
-              start: "top bottom-=50",
-              toggleActions: "play none none none",
-            },
-            y: 0,
-            opacity: 1,
-            rotationY: 0,
-            duration: 0.8,
-            ease: "back.out(1.2)",
-          }
-        );
-      });
-    }
-
-    // Seller section animation
-    if (sellerSectionRef.current) {
-      const sellerSection = sellerSectionRef.current;
-      const gradient = sellerSection.querySelector(".bg-gradient-to-r");
-
-      if (gradient) {
-        // Animate gradient on scroll
-        gsap.fromTo(
-          gradient,
-          { backgroundPosition: "0% 50%" },
-          {
-            scrollTrigger: {
-              trigger: sellerSection,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-            },
-            backgroundPosition: "100% 50%",
-            ease: "none",
-          }
-        );
-
-        // Add 3D depth to cards
-        const cards = sellerSection.querySelectorAll(
-          ".seller-benefits-slider .slick-slide"
-        );
-        cards.forEach((card) => {
-          gsap.set(card, {
-            transformStyle: "preserve-3d",
-            transformPerspective: 1000,
-          });
-        });
-
-        // Add wave animation to the spheres
-        const spheres = sellerSection.querySelectorAll(
-          ".absolute.rounded-full"
-        );
-        gsap.to(spheres, {
-          scrollTrigger: {
-            trigger: sellerSection,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-          },
-          scale: "random(1, 1.5)",
-          x: "random(-30, 30)",
-          y: "random(-30, 30)",
-          rotation: "random(-15, 15)",
-          stagger: 0.1,
-          ease: "sine.inOut",
-        });
-      }
-    }
-
-    // News Grid animation with staggered cards
-    if (newsGridRef.current) {
-      const newsGrid = newsGridRef.current;
-      const newsCards = newsGrid.querySelectorAll(".bg-white");
-
-      gsap.from(newsCards, {
-        scrollTrigger: {
-          trigger: newsGrid,
-          start: "top bottom-=100",
-          end: "center center",
-          toggleActions: "play none none reverse",
-        },
-        y: 50,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power2.out",
-        clearProps: "all",
-      });
-    }
-
-    // Newsletter section animation
-    if (newsletterRef.current) {
-      const newsletterSection = newsletterRef.current;
-      const newsletterCard = newsletterSection.querySelector(".rounded-3xl");
-
-      ScrollTrigger.create({
-        trigger: newsletterSection,
-        start: "top bottom",
-        onEnter: () => {
-          gsap.fromTo(
-            newsletterCard,
-            {
-              y: 50,
-              opacity: 0.5,
-              scale: 0.95,
-              boxShadow: "0 5px 15px rgba(0,0,0,0.05)",
-            },
-            {
-              y: 0,
-              opacity: 1,
-              scale: 1,
-              boxShadow: "0 15px 30px rgba(0,0,0,0.1)",
-              duration: 1,
-              ease: "elastic.out(1, 0.75)",
-            }
-          );
-        },
-        once: true,
-      });
-    }
-
-    // 3D scroll animations for the entire page
-    gsap.utils.toArray(".gsap-reveal").forEach((elem, i) => {
-      gsap.from(elem, {
-        scrollTrigger: {
-          trigger: elem,
-          start: "top bottom-=100",
-          toggleActions: "play none none reverse",
-        },
-        opacity: 0,
-        y: 40,
-        rotationX: 10,
-        transformPerspective: 1000,
-        duration: 1,
-        delay: i * 0.1,
-        ease: "power2.out",
-      });
-    });
-
-    // Create scroll-based page progress indicator
-    gsap.to("body", {
-      scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.3,
-        onUpdate: (self) => {
-          const progress = self.progress.toFixed(2) * 100;
-          document.documentElement.style.setProperty(
-            "--scroll-progress",
-            `${progress}%`
-          );
-        },
-      },
-    });
-  }, []);
 
   useEffect(() => {
     // Initialize AOS with optimized settings
@@ -522,6 +133,16 @@ function Home() {
     ],
   };
 
+  // Thêm debug log
+  useEffect(() => {
+    console.log("Home component mounted");
+
+    // For debugging product loading
+    return () => {
+      console.log("Home component unmounted");
+    };
+  }, []);
+
   return (
     <div className="font-sans bg-slate-50 dark:bg-gray-900 text-gray-900 dark:text-white perspective-1000">
       {/* Scroll Progress Indicator */}
@@ -563,8 +184,13 @@ function Home() {
       {/* Intro Cards - Soft gradient */}
       <div
         ref={introSectionRef}
-        className="py-16 bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-100 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 gsap-reveal">
-        <IntroCard />
+        className="py-16 bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-100 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800">
+        <div className="intro-card-section">
+          <h2 className="text-center text-2xl font-bold mb-4 mt-10">
+            Sản Phẩm Mới Nhất
+          </h2>
+          <IntroCard />
+        </div>
       </div>
 
       {/* Services Section - White with gradient top */}
@@ -970,7 +596,7 @@ function Home() {
                     </div>
                     <div className="p-6">
                       <h3 className="text-xl font-bold text-gray-900 mb-3">
-                        Tăng Doanh Thu Của Bạn
+                        Tăng Doanh Thu Của Bạn Mỗi Ngày
                       </h3>
                       <p className="text-gray-600">
                         Thúc đẩy doanh số và lợi nhuận của bạn bằng cách tiếp
@@ -1004,7 +630,7 @@ function Home() {
               </Slider>
 
               <div className="mt-16 text-center gsap-reveal">
-                <Link to="/register-seller">
+                <Link to="/become-seller">
                   <button className="px-8 py-4 bg-white text-indigo-600 font-bold rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl relative overflow-hidden seller-button">
                     <span className="relative z-10">Đăng Ký Làm Người Bán</span>
                   </button>
@@ -1391,18 +1017,18 @@ function Home() {
 
         /* Floating animation for hero particles */
         @keyframes float-0 {
-          0%, 100% { transform: translateY(0) translateZ(0) rotate(0); }
-          50% { transform: translateY(-20px) translateZ(50px) rotate(5deg); }
+          0%, 100% { transform: translateY(0) rotate(0); }
+          50% { transform: translateY(-20px) rotate(5deg); }
         }
         
         @keyframes float-1 {
-          0%, 100% { transform: translateY(0) translateZ(0) rotate(0); }
-          50% { transform: translateY(-15px) translateZ(30px) rotate(-5deg); }
+          0%, 100% { transform: translateY(0) rotate(0); }
+          50% { transform: translateY(-15px) rotate(-5deg); }
         }
         
         @keyframes float-2 {
-          0%, 100% { transform: translateY(0) translateZ(0) rotate(0); }
-          50% { transform: translateY(-25px) translateZ(70px) rotate(10deg); }
+          0%, 100% { transform: translateY(0) rotate(0); }
+          50% { transform: translateY(-25px) rotate(10deg); }
         }
 
         /* Button hover effect */

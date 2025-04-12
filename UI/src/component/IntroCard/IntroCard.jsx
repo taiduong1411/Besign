@@ -5,78 +5,185 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { getItems } from "../../utils/service";
-import { Tag, Tooltip, Skeleton } from "antd";
-import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { Tag, Tooltip, Skeleton, Empty, Button } from "antd";
+import {
+  EyeOutlined,
+  ShoppingCartOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import { Link } from "react-router-dom";
+
+// Thêm dữ liệu mẫu để hiển thị khi không có dữ liệu từ API
+const FALLBACK_PRODUCTS = [
+  {
+    _id: "fallback-1",
+    product_name: "Tranh Phong Cảnh Đẹp",
+    product_title: "Bức tranh phong cảnh thiên nhiên tuyệt đẹp",
+    product_description: "Đây là mô tả chi tiết về bức tranh phong cảnh",
+    product_price: 1500000,
+    product_image: [
+      {
+        url: "https://res.cloudinary.com/daqtqvneu/image/upload/v1717214881/placeholder-image_qpqgyd.jpg",
+      },
+    ],
+    product_category: ["Tranh phong cảnh"],
+    isPublic: true,
+  },
+  {
+    _id: "fallback-2",
+    product_name: "Tượng Nghệ Thuật",
+    product_title: "Tượng nghệ thuật hiện đại phong cách minimal",
+    product_description: "Đây là mô tả chi tiết về tượng nghệ thuật",
+    product_price: 2500000,
+    product_image: [
+      {
+        url: "https://res.cloudinary.com/daqtqvneu/image/upload/v1717214881/placeholder-image_qpqgyd.jpg",
+      },
+    ],
+    product_category: ["Điêu khắc"],
+    isPublic: true,
+  },
+  {
+    _id: "fallback-3",
+    product_name: "Tranh Trừu Tượng",
+    product_title: "Tranh nghệ thuật trừu tượng với các mảng màu sắc",
+    product_description: "Đây là mô tả chi tiết về tranh trừu tượng",
+    product_price: 1800000,
+    product_image: [
+      {
+        url: "https://res.cloudinary.com/daqtqvneu/image/upload/v1717214881/placeholder-image_qpqgyd.jpg",
+      },
+    ],
+    product_category: ["Tranh trừu tượng"],
+    isPublic: true,
+  },
+  {
+    _id: "fallback-4",
+    product_name: "Tranh Chân Dung",
+    product_title: "Tranh chân dung nghệ thuật phong cách cổ điển",
+    product_description: "Đây là mô tả chi tiết về tranh chân dung",
+    product_price: 2000000,
+    product_image: [
+      {
+        url: "https://res.cloudinary.com/daqtqvneu/image/upload/v1717214881/placeholder-image_qpqgyd.jpg",
+      },
+    ],
+    product_category: ["Tranh chân dung"],
+    isPublic: true,
+  },
+];
 
 function IntroCard() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     AOS.init();
     fetchProducts();
   }, []);
 
+  // Thêm một hàm để sử dụng dữ liệu mẫu khi cần
+  const setFallbackData = () => {
+    console.log(
+      "Sử dụng dữ liệu mẫu do không thể kết nối hoặc không có dữ liệu"
+    );
+    setProducts(FALLBACK_PRODUCTS);
+  };
+
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await getItems("seller/all-products");
-      if (response.status === 200) {
-        // Filter only public products and ensure no duplicates using ID
-        const publicProducts = response.data.filter(
-          (product) => product.isPublic === true
-        );
 
+      // Gọi API để lấy tất cả sản phẩm
+      const response = await getItems("seller/all-products");
+      console.log("API Response:", response);
+
+      if (response.status === 200) {
+        if (!response.data || !Array.isArray(response.data)) {
+          console.error("Dữ liệu trả về không phải là mảng:", response.data);
+          setFallbackData();
+          setLoading(false);
+          return;
+        }
+
+        // Log số lượng sản phẩm nhận được
+        console.log("Số lượng sản phẩm từ API:", response.data.length);
+
+        // Filter only public products
+        const publicProducts = response.data.filter((product) => {
+          if (!product) {
+            console.warn(
+              "Sản phẩm không hợp lệ (undefined/null) trong danh sách"
+            );
+            return false;
+          }
+
+          const isPublicProduct = product && product.isPublic === true;
+          if (!isPublicProduct) {
+            console.log("Sản phẩm không public:", product._id);
+          }
+          return isPublicProduct;
+        });
+
+        console.log("Số lượng sản phẩm public:", publicProducts.length);
         // Create a map to store unique products by ID
         const uniqueProductsMap = new Map();
         publicProducts.forEach((product) => {
-          uniqueProductsMap.set(product._id, product);
+          if (product && product._id) {
+            uniqueProductsMap.set(product._id, product);
+          } else {
+            console.warn("Sản phẩm thiếu ID:", product);
+          }
         });
 
         // Convert map values back to array
         const uniqueProducts = Array.from(uniqueProductsMap.values());
+        console.log("Số lượng sản phẩm unique:", uniqueProducts.length);
 
-        setProducts(uniqueProducts);
-        console.log(
-          "Loaded products:",
-          uniqueProducts.length,
-          "from",
-          publicProducts.length,
-          "total public products"
-        );
+        // Kiểm tra dữ liệu sản phẩm
+        if (uniqueProducts.length > 0) {
+          console.log("Sản phẩm đầu tiên:", uniqueProducts[0]);
+          setProducts(uniqueProducts);
+        } else {
+          console.log("Không có sản phẩm hiển thị, sử dụng dữ liệu mẫu");
+          setFallbackData();
+        }
+      } else {
+        console.error("Lỗi từ API:", response);
+        setFallbackData();
       }
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching products:", error);
+      setFallbackData();
       setLoading(false);
     }
   };
 
+  // Settings for slider
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    pauseOnHover: true,
-    variableWidth: false,
-    centerMode: false,
+    initialSlide: 0,
     responsive: [
       {
-        breakpoint: 1400,
+        breakpoint: 1280,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 1,
+          infinite: true,
+          dots: true,
         },
       },
       {
-        breakpoint: 1024,
+        breakpoint: 768,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
+          initialSlide: 1,
         },
       },
       {
@@ -84,24 +191,15 @@ function IntroCard() {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          dots: true,
         },
       },
     ],
   };
 
   return (
-    <div className="min-h-[90vh] w-full flex justify-center items-center py-12">
-      <div className="w-[95%] max-w-[1400px] mx-auto">
-        <div className="mb-10" data-aos="fade-up" data-aos-duration="1000">
-          <h1 className="text-center text-3xl font-Lexend-content text-red-500 max-[1200px]:text-xl">
-            Our Design
-          </h1>
-          <p className="text-4xl max-[1200px]:text-3xl text-center pt-4 font-bold font-Lexend-content text-[#013A70]">
-            Các Thiết Kế Của Chúng Tôi
-          </p>
-        </div>
-
-        {/* Product Slider */}
+    <div className="our-designs-section py-14 px-4 md:px-8">
+      <div className="container mx-auto">
         <div
           className="product-slider-container"
           data-aos="fade-up"
@@ -186,12 +284,25 @@ function IntroCard() {
               ))}
             </Slider>
           ) : (
-            <div className="text-center py-12 bg-gray-50 rounded-xl">
-              <p className="text-gray-500">Không có sản phẩm nào hiển thị.</p>
-              <p className="text-sm text-gray-400 mt-2">
-                Tất cả sản phẩm public sẽ xuất hiện ở đây
-              </p>
-            </div>
+            <Empty
+              description={
+                <div>
+                  <p className="text-gray-500">
+                    Không có sản phẩm nào hiển thị.
+                  </p>
+                  <p className="text-sm text-gray-400 mt-2">
+                    Tất cả sản phẩm public sẽ xuất hiện ở đây
+                  </p>
+                  <Button
+                    icon={<ReloadOutlined />}
+                    size="small"
+                    onClick={fetchProducts}
+                    className="mt-4">
+                    Tải lại
+                  </Button>
+                </div>
+              }
+            />
           )}
         </div>
 
