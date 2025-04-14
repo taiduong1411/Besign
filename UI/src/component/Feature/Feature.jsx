@@ -13,7 +13,7 @@ const Featured = () => {
   }, []);
 
   const handleSubmit = () => {
-    navigate(`/gigs?search=${input}`);
+    navigate(`/products/category/${input}`);
   };
 
   // Popular search categories with icons

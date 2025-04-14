@@ -2,17 +2,90 @@ const Products = require("../model/product");
 const Accounts = require("../model/account");
 const jwt_decode = require("../services/tokenDecode");
 const mongoose = require("mongoose");
-
+const { generateOrderCode } = require("../utils/orderHelper");
+const Order = require("../model/order");
+const emailService = require("../services/email");
+const Review = require("../model/review");
 const SellerController = {
   // Trang seller
   getAllProductsBySeller: async (req, res, next) => {
     const token = jwt_decode.decodeToken(req.headers["authorization"]);
     const seller = await Accounts.findOne({ _id: token._id });
     try {
+      // Lấy danh sách sản phẩm của seller
       const products = await Products.find({ seller_email: seller.email });
-      res.status(200).json(products);
+
+      // Lấy tất cả đơn hàng đã xác nhận của seller
+      const orders = await Order.find({
+        status: true,
+      });
+
+      console.log("Số lượng đơn hàng:", orders.length);
+      // Log cấu trúc của đơn hàng đầu tiên để kiểm tra
+      if (orders.length > 0) {
+        console.log("Cấu trúc đơn hàng:", JSON.stringify(orders[0], null, 2));
+      }
+
+      // Tính số lượt mua và doanh thu cho mỗi sản phẩm
+      const productsWithStats = await Promise.all(
+        products.map(async (product) => {
+          console.log(
+            "Đang tính cho sản phẩm:",
+            product._id,
+            product.product_name
+          );
+
+          // Đếm số lượng đơn hàng có chứa sản phẩm này
+          let totalSold = 0;
+          let totalRevenue = 0;
+
+          // Lặp qua từng đơn hàng để tính
+          for (const order of orders) {
+            // Kiểm tra xem đơn hàng có chứa sản phẩm không (dựa vào productId)
+            if (
+              order.productId &&
+              order.productId.toString() === product._id.toString()
+            ) {
+              console.log(
+                `Đơn hàng ${order._id} chứa sản phẩm ${product.product_name}`
+              );
+              // Mỗi đơn hàng chỉ mua 1 sản phẩm, vì vậy chỉ cần đếm số đơn hàng
+              totalSold += order.quantity || 1;
+              totalRevenue += order.totalAmount || product.product_price || 0;
+            }
+          }
+
+          console.log(
+            `Tổng số lượng đã bán của ${product.product_name}: ${totalSold}`
+          );
+
+          // Lấy đánh giá trung bình của sản phẩm
+          const reviews = await Review.find({ product_id: product._id });
+          const averageRating =
+            reviews.length > 0
+              ? reviews.reduce((sum, review) => sum + review.rating, 0) /
+                reviews.length
+              : 0;
+
+          // Trả về sản phẩm với thông tin thống kê
+          const a = {
+            ...product._doc,
+            total_sold: totalSold,
+            total_revenue: totalRevenue,
+            average_rating: parseFloat(averageRating.toFixed(1)),
+            review_count: reviews.length,
+          };
+          console.log(a);
+          return a;
+        })
+      );
+      res.status(200).json(productsWithStats);
     } catch (err) {
-      res.status(500).json(err);
+      console.error("Error getting products with stats:", err);
+      res.status(500).json({
+        message: "Có lỗi xảy ra khi lấy thông tin sản phẩm",
+        error: err.message,
+      });
     }
   },
   // Trang home
@@ -279,6 +352,107 @@ const SellerController = {
       return res.status(500).json({
         msg: "Lỗi khi xóa sản phẩm",
       });
+    }
+  },
+  getCategory: async (req, res) => {
+    const categories = await Products.distinct("product_category");
+    console.log(categories);
+    return res.status(200).json(categories);
+  },
+  getPrice: async (req, res) => {
+    const prices = await Products.distinct("product_price");
+    console.log(prices);
+    return res.status(200).json(prices);
+  },
+  getRating: async (req, res) => {
+    const ratings = await Review.distinct("rating");
+    console.log(ratings);
+    return res.status(200).json(ratings);
+  },
+  checkout: async (req, res) => {
+    let data = req.body;
+    let orderName;
+    let isUnique = false;
+
+    // Tạo mã đơn hàng mới cho đến khi tìm được mã không trùng
+    while (!isUnique) {
+      orderName = generateOrderCode();
+      const existingOrder = await Order.findOne({ order_name: orderName });
+      if (!existingOrder) {
+        isUnique = true;
+      }
+    }
+
+    data = {
+      ...data,
+      order_name: orderName,
+      status: false,
+    };
+
+    try {
+      await Order(data).save();
+      return res.status(200).json({
+        msg: "Đơn hàng đã được tạo thành công",
+        order_name: data.order_name,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        msg: "Lỗi khi tạo đơn hàng",
+      });
+    }
+  },
+  getOrders: async (req, res) => {
+    const token = jwt_decode.decodeToken(req.headers["authorization"]);
+    const seller = await Accounts.findOne({ _id: token._id });
+    const product = await Products.findOne({ seller_email: seller.email });
+    let orders = await Order.find({ productId: product._id });
+    orders = await Promise.all(
+      orders.map(async (order) => {
+        const product = await Products.findById(order.productId);
+        return {
+          ...order._doc,
+          product_name: product?.product_name || "Sản phẩm đã bị xóa",
+          product_image: product?.product_image || [],
+          product_price: product?.product_price || 0,
+        };
+      })
+    );
+    return res.status(200).json(orders);
+  },
+  updateOrderStatus: async (req, res) => {
+    const token = jwt_decode.decodeToken(req.headers["authorization"]);
+    const seller = await Accounts.findOne({ _id: token._id });
+    const { orderId, status } = req.body;
+
+    try {
+      const order = await Order.findById(orderId);
+      if (!order) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+
+      const product = await Products.findById(order.productId);
+      if (!product) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+
+      // Update order status
+      order.status = status;
+      await order.save();
+
+      // Send confirmation email to buyer
+      emailService.confirmOrder(
+        "Trạng thái đơn hàng đã được cập nhật",
+        `Đơn hàng ${order.order_name} đã được xác nhận`,
+        order.email,
+        product.product_name
+      );
+
+      return res
+        .status(200)
+        .json({ message: "Order status updated successfully" });
+    } catch (error) {
+      console.error("Error updating order status:", error);
+      return res.status(500).json({ message: "Internal server error" });
     }
   },
 };

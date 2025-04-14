@@ -625,4 +625,143 @@ module.exports = {
     }
     return blockSeller(subject, message, mail);
   },
+  confirmOrder: async (subject, message, mail, productName) => {
+    async function confirmOrder(subject, message, mail, productName) {
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "djtimz1411@gmail.com",
+          pass: "esfryvpkyuykxyzy",
+        },
+      });
+      var mailOptions = {
+        from: '"Besign. Customer Support" <djtimz1411@gmail.com>',
+        to: mail,
+        subject: subject,
+        text: message,
+        html: `<!DOCTYPE html>
+                <html lang="en">
+                
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .container {
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                            background-color: #ffffff;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        }
+                        .header {
+                            text-align: center;
+                            padding: 20px 0;
+                            background-color: #4CAF50;
+                            color: #ffffff;
+                        }
+                        .header h1 {
+                            margin: 0;
+                            font-size: 24px;
+                        }
+                        .content {
+                            padding: 20px;
+                            text-align: center;
+                        }
+                        .content h2 {
+                            color: #1f2937;
+                            font-size: 24px;
+                            margin-bottom: 20px;
+                        }
+                        .message-box {
+                            background-color: #f3f4f6;
+                            border-radius: 12px;
+                            padding: 25px;
+                            margin: 20px 0;
+                            text-align: left;
+                        }
+                        .message-box p {
+                            margin: 0;
+                            line-height: 1.7;
+                            color: #4b5563;
+                        }
+                        .download-section {
+                            text-align: center;
+                            margin: 30px 0;
+                        }
+                        .download-btn {
+                            display: inline-block;
+                            padding: 12px 24px;
+                            background-color: #4CAF50;
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 6px;
+                            font-weight: bold;
+                            transition: background-color 0.3s;
+                        }
+                        .download-btn:hover {
+                            background-color: #45a049;
+                        }
+                        .product-info {
+                            background-color: #f8f9fa;
+                            padding: 15px;
+                            border-radius: 8px;
+                            margin: 20px 0;
+                        }
+                        .product-name {
+                            font-size: 18px;
+                            font-weight: bold;
+                            color: #2c3e50;
+                            margin-bottom: 10px;
+                        }
+                        .footer {
+                            text-align: center;
+                            padding: 20px;
+                            font-size: 12px;
+                            color: #888888;
+                        }
+                    </style>
+                </head>
+                
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>Besign. Customer Support</h1>
+                        </div>
+                        <div class="content">
+                            <h2>Dear Customer,</h2>
+                            <div class="message-box">
+                                <p>${message}</p>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name">${productName}</div>
+                                <p>Your digital product is ready for download</p>
+                            </div>
+                            <div class="download-section">
+                                <a href="#" class="download-btn">Download Now</a>
+                            </div>
+                            <p style="color: #666; font-size: 14px; margin-top: 20px;">
+                                If you have any questions, please contact our support team.
+                            </p>
+                        </div>
+                    </div>
+                </body>
+                </html>`,
+      };
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+    }
+    return confirmOrder(subject, message, mail, productName);
+  },
 };

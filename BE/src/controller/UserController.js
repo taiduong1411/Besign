@@ -6,6 +6,7 @@ const services = require("../services/email");
 const Contact = require("../model/contact");
 const Sellers = require("../model/seller");
 const Users = require("../model/account");
+const Order = require("../model/order");
 const AdminController = {
   becomeSeller: async (req, res, next) => {
     try {
@@ -42,6 +43,15 @@ const AdminController = {
       console.log(error);
       return res.status(500).json({ msg: "Có lỗi xảy ra. Vui lòng thử lại !" });
     }
+  },
+  getOrderHistory: async (req, res, next) => {
+    const { userId } = req.params;
+    console.log(userId);
+    //lay ra thong tin don hang va thong tin san pham
+    const orderHistory = await Order.find({ user_id: userId }).populate(
+      "productId"
+    );
+    return res.status(200).json(orderHistory);
   },
 };
 module.exports = AdminController;

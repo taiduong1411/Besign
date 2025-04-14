@@ -31,7 +31,6 @@ import {
   addItems,
   getItems,
   updateItem,
-  patchItem,
 } from "../../../utils/service";
 import {
   MenuFoldOutlined,
@@ -107,7 +106,7 @@ function Products() {
   const columns = [
     {
       title: "Tên Sản Phẩm",
-      width: "30%",
+      width: "20%",
       key: "title",
       render: (record) => {
         return (
@@ -185,6 +184,22 @@ function Products() {
             })}
           </div>
         );
+      },
+    },
+    {
+      title: "Lượt mua",
+      width: "15%",
+      key: "total_sold",
+      render: (record) => {
+        return <div className="text-xs">{record.total_sold}</div>;
+      },
+    },
+    {
+      title: "Reviews",
+      width: "15%",
+      key: "review_count",
+      render: (record) => {
+        return <div className="text-xs">{record.review_count}</div>;
       },
     },
     {

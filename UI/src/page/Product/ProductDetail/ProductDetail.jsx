@@ -4,19 +4,16 @@ import { useNavigate } from "react-router-dom";
 import {
   Breadcrumb,
   Rate,
-  InputNumber,
   Button,
   Tabs,
   Skeleton,
   Tag,
   Divider,
-  message,
   notification,
   Tooltip,
   Watermark,
 } from "antd";
 import {
-  ShoppingCartOutlined,
   HeartOutlined,
   ShareAltOutlined,
   HomeOutlined,
@@ -33,14 +30,13 @@ import ReviewList from "../../../component/ReviewList/ReviewList";
 import ReviewForm from "../../../component/ReviewForm/ReviewForm";
 import ChatPopup from "../../../component/Chat/ChatPopup";
 
-const { TabPane } = Tabs;
+// const { TabPane } = Tabs;
 
 function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [refreshReviews, setRefreshReviews] = useState(0);
 
@@ -142,18 +138,13 @@ function ProductDetail() {
     }
   };
 
-  const handleAddToCart = () => {
-    // Implementation for adding to cart would go here
-    message.success(`Đã thêm ${quantity} sản phẩm vào giỏ hàng`);
-  };
-
   const handleBuyNow = () => {
-    // Implementation for direct checkout would go here
-    message.info("Chức năng thanh toán đang được phát triển");
-  };
-
-  const handleQuantityChange = (value) => {
-    setQuantity(value);
+    navigate("/checkout", {
+      state: {
+        product,
+        quantity: 1, // Mặc định số lượng là 1
+      },
+    });
   };
 
   // Settings for the main image slider
@@ -341,26 +332,35 @@ function ProductDetail() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Breadcrumb */}
-        <Breadcrumb className="mb-6">
+        <Breadcrumb className="mb-8">
           <Breadcrumb.Item href="/">
-            <HomeOutlined /> Trang chủ
+            <HomeOutlined className="text-blue-500" />
+            <span className="text-gray-600">Trang chủ</span>
           </Breadcrumb.Item>
-          <Breadcrumb.Item href="/products">Sản phẩm</Breadcrumb.Item>
+          <Breadcrumb.Item href="/products">
+            <span className="text-gray-600">Sản phẩm</span>
+          </Breadcrumb.Item>
           {product.product_category && product.product_category[0] && (
-            <Breadcrumb.Item>{product.product_category[0]}</Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <span className="text-gray-600">
+                {product.product_category[0]}
+              </span>
+            </Breadcrumb.Item>
           )}
-          <Breadcrumb.Item>{product.product_name}</Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <span className="text-blue-500">{product.product_name}</span>
+          </Breadcrumb.Item>
         </Breadcrumb>
 
         {/* Product Details */}
-        <div className="bg-white rounded-xl shadow-md overflow-hidden mb-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
             {/* Product Images */}
             <div className="product-images-container">
               {/* Main Image */}
-              <div className="main-image-container mb-4 overflow-hidden rounded-lg border border-gray-200">
+              <div className="main-image-container mb-6 overflow-hidden rounded-xl border border-gray-200 shadow-lg">
                 {product.product_image && product.product_image.length > 0 ? (
-                  <Watermark content="Besign.">
+                  <Watermark content="Besign." className="opacity-60">
                     <Slider
                       {...mainSliderSettings}
                       asNavFor={nav2}
@@ -370,14 +370,14 @@ function ProductDetail() {
                           <img
                             src={image.url}
                             alt={`${product.product_name} - Image ${index + 1}`}
-                            className="w-full h-[400px] object-contain bg-white"
+                            className="w-full h-[500px] object-contain bg-white"
                           />
                         </div>
                       ))}
                     </Slider>
                   </Watermark>
                 ) : (
-                  <div className="flex items-center justify-center w-full h-[400px] bg-gray-100 rounded-lg">
+                  <div className="flex items-center justify-center w-full h-[500px] bg-gray-100 rounded-xl">
                     <p className="text-gray-400">No image available</p>
                   </div>
                 )}
@@ -385,7 +385,7 @@ function ProductDetail() {
 
               {/* Thumbnail Images */}
               {product.product_image && product.product_image.length > 1 && (
-                <div className="thumbnail-slider-container px-1">
+                <div className="thumbnail-slider-container px-2">
                   <Slider
                     {...thumbnailSliderSettings}
                     asNavFor={nav1}
@@ -393,9 +393,9 @@ function ProductDetail() {
                     {product.product_image.map((image, index) => (
                       <div
                         key={index}
-                        className={`thumbnail-item p-1 cursor-pointer`}>
+                        className={`thumbnail-item p-2 cursor-pointer`}>
                         <div
-                          className={`border rounded-md overflow-hidden ${
+                          className={`border rounded-lg overflow-hidden transition-all duration-300 ${
                             activeIndex === index
                               ? "border-blue-500 ring-2 ring-blue-200"
                               : "border-gray-200"
@@ -403,7 +403,7 @@ function ProductDetail() {
                           <img
                             src={image.url}
                             alt={`Thumbnail ${index + 1}`}
-                            className="w-full h-20 object-cover"
+                            className="w-full h-24 object-cover"
                           />
                         </div>
                       </div>
@@ -415,79 +415,62 @@ function ProductDetail() {
 
             {/* Product Info */}
             <div className="product-info">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
                 {product.product_name}
               </h1>
 
-              {/* Category */}
-              <div className="mb-4">
+              {/* Category tags */}
+              <div className="mb-6">
                 {product.product_category &&
                   product.product_category.map((category, index) => (
-                    <Tag key={index} color="blue" className="mr-2">
+                    <Tag
+                      key={index}
+                      className="bg-blue-50 text-blue-600 border-0 mr-2 mb-2">
                       {category}
                     </Tag>
                   ))}
               </div>
 
               {/* Rating */}
-              <div className="flex items-center mb-4">
-                <Rate disabled value={ratingData.average} allowHalf />
-                <span className="ml-2 text-gray-500">
+              <div className="flex items-center mb-6">
+                <Rate
+                  disabled
+                  value={ratingData.average}
+                  allowHalf
+                  className="text-yellow-400"
+                />
+                <span className="ml-3 text-gray-600">
                   ({ratingData.average.toFixed(1)}/5 - {ratingData.total} đánh
                   giá)
                 </span>
               </div>
 
               {/* Price */}
-              <div className="mb-6">
-                <p className="text-3xl font-bold text-blue-600">
+              <div className="mb-8">
+                <p className="text-4xl font-bold text-blue-600">
                   {product.product_price.toLocaleString("vi-VN")} đ
                 </p>
-                {/* Optional: Display original price for discounted items */}
-                {/* <p className="text-gray-500 line-through">
-                  {(product.product_price * 1.2).toLocaleString("vi-VN")} đ
-                </p> */}
               </div>
 
               {/* Description */}
-              <div className="mb-6">
-                <p className="text-gray-600">{product.product_title}</p>
+              <div className="mb-8">
+                <p className="text-gray-600 text-lg">{product.product_title}</p>
               </div>
 
               {/* Availability */}
-              <div className="mb-6">
+              <div className="mb-8">
                 <p className="flex items-center text-green-600">
-                  <CheckCircleOutlined className="mr-2" />
-                  Còn hàng
+                  <CheckCircleOutlined className="mr-2 text-xl" />
+                  <span className="text-lg">Còn hàng</span>
                 </p>
-              </div>
-
-              {/* Quantity */}
-              <div className="mb-6">
-                <p className="mb-2 font-medium">Số lượng:</p>
-                <InputNumber
-                  min={1}
-                  max={99}
-                  defaultValue={1}
-                  onChange={handleQuantityChange}
-                  className="mr-4"
-                />
               </div>
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-4">
                 <Button
-                  type="primary"
-                  size="large"
-                  icon={<ShoppingCartOutlined />}
-                  onClick={handleAddToCart}
-                  className="bg-blue-600 hover:bg-blue-700 flex items-center">
-                  Thêm vào giỏ
-                </Button>
-                <Button
                   size="large"
                   onClick={handleBuyNow}
-                  className="border-blue-600 text-blue-600 hover:text-blue-700 hover:border-blue-700">
+                  className="bg-blue-600 text-white border-0 hover:bg-blue-700 transition-all duration-300">
                   Mua ngay
                 </Button>
                 <Tooltip title="Chat với người bán">
@@ -495,7 +478,7 @@ function ProductDetail() {
                     icon={<MessageOutlined />}
                     size="large"
                     onClick={handleOpenChat}
-                    className="border-blue-600 text-blue-600 hover:text-blue-700 hover:border-blue-700">
+                    className="bg-blue-500 text-white border-0 hover:bg-blue-600 transition-all duration-300">
                     Chat ngay
                   </Button>
                 </Tooltip>
@@ -503,14 +486,14 @@ function ProductDetail() {
                   <Button
                     icon={<HeartOutlined />}
                     size="large"
-                    className="border-gray-300"
+                    className="bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200 transition-all duration-300"
                   />
                 </Tooltip>
                 <Tooltip title="Chia sẻ sản phẩm">
                   <Button
                     icon={<ShareAltOutlined />}
                     size="large"
-                    className="border-gray-300"
+                    className="bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200 transition-all duration-300"
                   />
                 </Tooltip>
               </div>
@@ -519,96 +502,125 @@ function ProductDetail() {
         </div>
 
         {/* Product Details Tabs */}
-        <div className="bg-white rounded-xl shadow-md overflow-hidden mb-10">
-          <Tabs defaultActiveKey="1" className="p-6">
-            <TabPane tab="Mô tả chi tiết" key="1">
-              <div className="prose max-w-none">
-                <h3 className="text-xl font-semibold mb-4">
-                  Thông tin sản phẩm
-                </h3>
-                <div className="whitespace-pre-line">
-                  {product.product_description ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: product.product_description,
-                      }}
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-10">
+          <Tabs
+            defaultActiveKey="1"
+            className="p-6"
+            items={[
+              {
+                key: "1",
+                label: "Mô tả chi tiết",
+                children: (
+                  <div className="prose max-w-none">
+                    <h3 className="text-2xl font-semibold mb-6 text-gray-800">
+                      Thông tin sản phẩm
+                    </h3>
+                    <div className="whitespace-pre-line text-gray-600">
+                      {product.product_description ? (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: product.product_description,
+                          }}
+                        />
+                      ) : (
+                        <p className="text-gray-500">
+                          Chưa có thông tin chi tiết về sản phẩm này.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                key: "2",
+                label: "Thông số kỹ thuật",
+                children: (
+                  <div className="prose max-w-none">
+                    <h3 className="text-2xl font-semibold mb-6 text-gray-800">
+                      Thông số kỹ thuật
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h4 className="font-medium mb-3 text-blue-600">
+                          Kích thước
+                        </h4>
+                        <p className="text-gray-600">Tùy chỉnh theo yêu cầu</p>
+                      </div>
+                      <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h4 className="font-medium mb-3 text-blue-600">
+                          Chất liệu
+                        </h4>
+                        <p className="text-gray-600">Cao cấp, bền bỉ</p>
+                      </div>
+                      <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h4 className="font-medium mb-3 text-blue-600">
+                          Xuất xứ
+                        </h4>
+                        <p className="text-gray-600">Việt Nam</p>
+                      </div>
+                      <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h4 className="font-medium mb-3 text-blue-600">
+                          Thời gian sản xuất
+                        </h4>
+                        <p className="text-gray-600">3-5 ngày làm việc</p>
+                      </div>
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                key: "3",
+                label: "Đánh giá sản phẩm",
+                children: (
+                  <div className="prose max-w-none">
+                    <ReviewList
+                      productId={id}
+                      refreshTrigger={refreshReviews}
                     />
-                  ) : (
-                    <p className="text-gray-500">
-                      Chưa có thông tin chi tiết về sản phẩm này.
-                    </p>
-                  )}
-                </div>
-              </div>
-            </TabPane>
-            <TabPane tab="Thông số kỹ thuật" key="2">
-              <div className="prose max-w-none">
-                <h3 className="text-xl font-semibold mb-4">
-                  Thông số kỹ thuật
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium mb-2">Kích thước</h4>
-                    <p className="text-gray-700">Tùy chỉnh theo yêu cầu</p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium mb-2">Chất liệu</h4>
-                    <p className="text-gray-700">Cao cấp, bền bỉ</p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium mb-2">Xuất xứ</h4>
-                    <p className="text-gray-700">Việt Nam</p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium mb-2">Thời gian sản xuất</h4>
-                    <p className="text-gray-700">3-5 ngày làm việc</p>
-                  </div>
-                </div>
-              </div>
-            </TabPane>
-            <TabPane tab="Đánh giá sản phẩm" key="3">
-              <div className="prose max-w-none">
-                <ReviewList productId={id} refreshTrigger={refreshReviews} />
 
-                <Divider>
-                  <span className="text-gray-500">Viết đánh giá của bạn</span>
-                </Divider>
+                    <Divider className="my-8 border-gray-200">
+                      <span className="text-gray-500">
+                        Viết đánh giá của bạn
+                      </span>
+                    </Divider>
 
-                {isLoggedIn ? (
-                  <ReviewForm
-                    productId={id}
-                    onSuccess={() => setRefreshReviews((prev) => prev + 1)}
-                  />
-                ) : (
-                  <div className="text-center p-6 bg-gray-50 rounded-lg">
-                    <p className="text-gray-600 mb-4">
-                      Bạn cần đăng nhập để viết đánh giá
-                    </p>
-                    <Link
-                      to="/login"
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-                      Đăng nhập
-                    </Link>
+                    {isLoggedIn ? (
+                      <ReviewForm
+                        productId={id}
+                        onSuccess={() => setRefreshReviews((prev) => prev + 1)}
+                      />
+                    ) : (
+                      <div className="text-center p-8 bg-gray-50 rounded-xl border border-gray-200">
+                        <p className="text-gray-600 mb-6">
+                          Bạn cần đăng nhập để viết đánh giá
+                        </p>
+                        <Link
+                          to="/login"
+                          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300">
+                          Đăng nhập
+                        </Link>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </TabPane>
-          </Tabs>
+                ),
+              },
+            ]}
+          />
         </div>
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div className="mb-10">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            <h2 className="text-3xl font-bold text-gray-800 mb-8">
               Sản phẩm liên quan
             </h2>
 
             <div className="related-products-slider">
               <Slider {...relatedProductsSettings}>
                 {relatedProducts.map((product) => (
-                  <div key={product._id} className="px-2">
+                  <div key={product._id} className="px-3">
                     <Link to={`/product/${product._id}`}>
-                      <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+                      <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col border border-gray-200">
                         <div className="relative overflow-hidden">
                           <img
                             src={
@@ -616,29 +628,26 @@ function ProductDetail() {
                               "https://res.cloudinary.com/daqtqvneu/image/upload/v1717214881/placeholder-image_qpqgyd.jpg"
                             }
                             alt={product.product_name}
-                            className="w-full h-[180px] object-cover object-center transition-transform duration-500 hover:scale-105"
+                            className="w-full h-[200px] object-cover object-center transition-transform duration-500 hover:scale-105"
                           />
-                          {/* Category tag */}
                           {product.product_category &&
                             product.product_category[0] && (
-                              <div className="absolute top-2 left-2">
-                                <Tag
-                                  color="blue"
-                                  className="text-xs px-2 py-0.5">
+                              <div className="absolute top-3 left-3">
+                                <Tag className="bg-blue-50 text-blue-600 border-0">
                                   {product.product_category[0]}
                                 </Tag>
                               </div>
                             )}
                         </div>
                         <div className="p-4 flex flex-col flex-grow">
-                          <h3 className="text-base font-semibold text-gray-800 mb-1 line-clamp-2 min-h-[2.5rem]">
+                          <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[2.5rem]">
                             {product.product_name}
                           </h3>
-                          <p className="text-xs text-gray-600 mb-3 line-clamp-2 min-h-[2rem]">
+                          <p className="text-sm text-gray-600 mb-4 line-clamp-2 min-h-[2rem]">
                             {product.product_title}
                           </p>
                           <div className="mt-auto">
-                            <div className="text-base font-bold text-blue-600">
+                            <div className="text-xl font-bold text-blue-600">
                               {product.product_price.toLocaleString("vi-VN")} đ
                             </div>
                           </div>
@@ -655,7 +664,7 @@ function ProductDetail() {
 
       <Footer />
 
-      {/* Replace Chat Modal with ChatPopup */}
+      {/* Chat Popup */}
       {showChat && selectedSeller && (
         <ChatPopup
           initialSeller={selectedSeller}
@@ -663,9 +672,9 @@ function ProductDetail() {
         />
       )}
 
-      {/* Custom CSS as an object with proper React style syntax */}
+      {/* Custom CSS */}
       <style>{`
-        /* Thumbnail slider styles */
+        /* Enhanced slider styles */
         .thumbnail-slider-container .slick-track {
           display: flex;
           gap: 8px;
@@ -699,18 +708,18 @@ function ProductDetail() {
         /* Enhance nav arrows */
         .slick-prev,
         .slick-next {
-          width: 36px;
-          height: 36px;
+          width: 40px;
+          height: 40px;
           background: rgba(255, 255, 255, 0.9);
           border-radius: 50%;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
           z-index: 10;
         }
 
         .slick-prev:before,
         .slick-next:before {
           color: #2563eb;
-          font-size: 18px;
+          font-size: 20px;
         }
 
         .slick-prev:hover,
@@ -729,6 +738,16 @@ function ProductDetail() {
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
+        }
+
+        /* Button hover effects */
+        .button-hover {
+          transition: all 0.3s ease;
+        }
+
+        .button-hover:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
       `}</style>
     </div>

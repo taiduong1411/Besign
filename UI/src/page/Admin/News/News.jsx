@@ -204,7 +204,7 @@ function News() {
                   background: "#4096ff",
                   borderColor: "#4096ff",
                 }}
-                data-id={record._id}
+                onClick={() => showEdit(record)}
               />
             </Tooltip>
             <Tooltip title="Xóa tin tức">
@@ -337,6 +337,11 @@ function News() {
   const [delOpen, setDelOpen] = useState(false);
   const [file, setFile] = useState("");
 
+  // State cho chức năng chỉnh sửa tin tức
+  const [editOpen, setEditOpen] = useState(false);
+  const [editingNews, setEditingNews] = useState(null);
+  const [editFile, setEditFile] = useState("");
+
   // Handle HashTag
   const [inputValue, setInputValue] = useState("");
   const [hashtags, setHashtags] = useState([]);
@@ -361,7 +366,7 @@ function News() {
     setLoading(true);
     let allData;
 
-    if (value == 1) {
+    if (value === 1) {
       const cloud = await upload(file, "trungduc/news");
       allData = {
         ...data,
@@ -387,11 +392,11 @@ function News() {
         await getDataNews();
         setAddOpen(false);
         setMsg({
-          type: res.status == 200 ? "success" : "error",
+          type: res.status === 200 ? "success" : "error",
           content: res.data.msg,
           hidden: false,
         });
-        message[res.status == 200 ? "success" : "error"](res.data.msg);
+        message[res.status === 200 ? "success" : "error"](res.data.msg);
         resetForm();
         setLoading(false);
       })
@@ -409,6 +414,79 @@ function News() {
     setValue(1);
     setValueStatus(false);
     setFile("");
+  };
+
+  // Hàm xử lý khi bấm nút Edit
+  const showEdit = async (record) => {
+    setEditingNews(record);
+    setContent(record.content);
+    setHashtags(record.hashtags || []);
+    setValueStatus(record.status);
+    setValue(1); // Mặc định chọn upload ảnh
+    setEditOpen(true);
+  };
+
+  const onEditSubmit = async (data) => {
+    setLoading(true);
+    let allData;
+
+    if (value === 1 && editFile) {
+      const cloud = await upload(editFile, "trungduc/news");
+      allData = {
+        ...data,
+        content: content,
+        status: valueStatus,
+        hashtags: hashtags,
+        img_cover: cloud
+          ? [{ id: cloud.public_id, url: cloud.url }]
+          : editingNews.img_cover,
+      };
+    } else if (value === 2) {
+      allData = {
+        ...data,
+        content: content,
+        status: valueStatus,
+        hashtags: hashtags,
+        img_cover: [{ id: "", url: data["img_url"] }],
+      };
+    } else {
+      allData = {
+        ...data,
+        content: content,
+        status: valueStatus,
+        hashtags: hashtags,
+        img_cover: editingNews.img_cover,
+      };
+    }
+
+    await addItems(`news/update-news/${editingNews._id}`, allData)
+      .then(async (res) => {
+        await getDataNews();
+        setEditOpen(false);
+        setMsg({
+          type: res.status === 200 ? "success" : "error",
+          content: res.data.msg,
+          hidden: false,
+        });
+        message[res.status === 200 ? "success" : "error"](res.data.msg);
+        resetEditForm();
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        message.error("Không thể cập nhật tin tức. Vui lòng thử lại sau.");
+      });
+  };
+
+  const resetEditForm = () => {
+    setEditingNews(null);
+    setContent("");
+    setHashtags([]);
+    setInputValue("");
+    setValue(1);
+    setValueStatus(false);
+    setEditFile("");
+    reset();
   };
 
   // handle del news
@@ -1154,6 +1232,306 @@ function News() {
         </div>
       </Modal>
 
+      {/* Edit News Modal */}
+      <Modal
+        title={
+          <div className="flex items-center gap-3 text-blue-600 pb-3">
+            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <EditOutlined style={{ fontSize: "18px" }} />
+            </div>
+            <span className="text-lg font-medium">Chỉnh sửa tin tức</span>
+          </div>
+        }
+        open={editOpen}
+        width={1000}
+        onCancel={() => {
+          setEditOpen(false);
+          resetEditForm();
+        }}
+        footer={null}
+        centered
+        bodyStyle={{ padding: 0, overflow: "auto", maxHeight: "80vh" }}
+        style={{ top: 20 }}
+        destroyOnClose
+        className="edit-news-modal">
+        <div className="modal-scrollable-content">
+          {editingNews && (
+            <form onSubmit={handleSubmit(onEditSubmit)} className="pt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="md:col-span-2">
+                  <div className="form-group">
+                    <label htmlFor="title" className="form-label">
+                      Tiêu Đề Chính
+                    </label>
+                    <textarea
+                      rows={2}
+                      type="text"
+                      {...register("title")}
+                      placeholder="Nhập tiêu đề chính của tin tức"
+                      name="title"
+                      id="title"
+                      className="form-input"
+                      defaultValue={editingNews.title}
+                      required={true}
+                    />
+                  </div>
+                </div>
+
+                <div className="md:col-span-2">
+                  <div className="form-group">
+                    <label htmlFor="sub_content" className="form-label">
+                      Mô tả ngắn
+                    </label>
+                    <textarea
+                      rows={3}
+                      type="text"
+                      {...register("sub_content")}
+                      placeholder="Nhập mô tả ngắn gọn về tin tức"
+                      name="sub_content"
+                      id="sub_content"
+                      className="form-input"
+                      defaultValue={editingNews.sub_content}
+                      required={true}
+                    />
+                  </div>
+                </div>
+
+                <div className="md:col-span-2">
+                  <div className="form-group">
+                    <label htmlFor="cover" className="form-label">
+                      Ảnh Đại Diện
+                    </label>
+                    <Radio.Group
+                      onChange={onChange}
+                      value={value}
+                      className="mb-4 flex flex-wrap gap-4">
+                      <Radio value={1} className="radio-card">
+                        <div className="radio-card-content">
+                          <FileImageOutlined className="text-lg text-blue-500" />
+                          <span>Chọn ảnh từ thiết bị</span>
+                        </div>
+                      </Radio>
+                      <Radio value={2} className="radio-card">
+                        <div className="radio-card-content">
+                          <LinkOutlined className="text-lg text-blue-500" />
+                          <span>Dùng URL ảnh</span>
+                        </div>
+                      </Radio>
+                    </Radio.Group>
+                    {value === 1 ? (
+                      <div className="upload-container">
+                        <div className="file-upload-area">
+                          <input
+                            onChange={(e) => setEditFile(e.target.files[0])}
+                            type="file"
+                            accept="image/*"
+                            name="cover"
+                            id="cover"
+                            className="file-input-hidden"
+                          />
+                          <label htmlFor="cover" className="file-upload-label">
+                            <div className="file-upload-content">
+                              <FileImageOutlined className="upload-icon" />
+                              <div className="upload-text">
+                                <span className="upload-title">Chọn ảnh</span>
+                                <span className="upload-desc">
+                                  Hoặc kéo và thả ảnh vào đây
+                                </span>
+                              </div>
+                              <Button
+                                type="primary"
+                                size="small"
+                                className="select-file-btn"
+                                icon={<FileImageOutlined />}>
+                                Chọn File
+                              </Button>
+                            </div>
+                          </label>
+                        </div>
+                        <div className="upload-preview">
+                          {editFile ? (
+                            <div className="upload-preview-content">
+                              <img
+                                src={URL.createObjectURL(editFile)}
+                                alt="Preview"
+                                className="w-full h-full object-cover rounded-lg"
+                              />
+                              <div className="preview-info">
+                                <Tooltip title={editFile.name}>
+                                  <Text ellipsis className="file-name">
+                                    {editFile.name}
+                                  </Text>
+                                </Tooltip>
+                                <Text className="file-size">
+                                  {(editFile.size / 1024).toFixed(1)} KB
+                                </Text>
+                                <Button
+                                  type="text"
+                                  danger
+                                  size="small"
+                                  icon={<DeleteOutlined />}
+                                  onClick={() => setEditFile("")}
+                                  className="remove-file-btn"
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="upload-preview-content">
+                              <img
+                                src={editingNews.img_cover[0].url}
+                                alt="Current Cover"
+                                className="w-full h-full object-cover rounded-lg"
+                              />
+                              <div className="preview-info">
+                                <Text className="text-gray-500 text-xs">
+                                  Ảnh hiện tại
+                                </Text>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center">
+                        <Input
+                          type="text"
+                          {...register("img_url")}
+                          placeholder="Nhập URL ảnh đại diện"
+                          name="img_url"
+                          id="img_url"
+                          className="form-input"
+                          prefix={<LinkOutlined className="text-gray-400" />}
+                          defaultValue={editingNews.img_cover[0].url}
+                          required={value === 2}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Hashtag */}
+                <div className="md:col-span-2">
+                  <div className="form-group">
+                    <label htmlFor="hashtags" className="form-label">
+                      Hashtags
+                    </label>
+                    <div className="flex items-center mb-2">
+                      <div className="relative flex-1">
+                        <input
+                          type="text"
+                          value={inputValue}
+                          onChange={handleInputChange}
+                          className="form-input pr-[100px]"
+                          placeholder="Thêm hashtag (không cần dấu #)"
+                        />
+                        <button
+                          onClick={handleAddHashtag}
+                          className="absolute right-1 top-1 bg-blue-500 text-white rounded-lg transition duration-300 hover:bg-blue-600 px-3 py-1.5 text-sm">
+                          <TagsOutlined className="mr-1" /> Thêm
+                        </button>
+                      </div>
+                    </div>
+                    <div className="hashtag-container">
+                      {hashtags.map((tag, index) => (
+                        <Tag
+                          key={index}
+                          closable
+                          onClose={() => removeData(index)}
+                          className="hashtag-tag">
+                          #{tag}
+                        </Tag>
+                      ))}
+                      {hashtags.length === 0 && (
+                        <Text type="secondary" className="text-xs italic">
+                          Chưa có hashtag nào được thêm
+                        </Text>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="md:col-span-2">
+                  <div className="form-group">
+                    <label htmlFor="content" className="form-label">
+                      Nội Dung
+                    </label>
+                    <div className="editor-container">
+                      <ReactQuill
+                        modules={modules}
+                        value={content}
+                        onChange={handleContentChange}
+                        className="news-editor"
+                        placeholder="Nhập nội dung chi tiết tin tức..."
+                        theme="snow"
+                      />
+                    </div>
+                    {content.length < 20 && (
+                      <Text
+                        type="secondary"
+                        className="text-xs italic mt-2 block">
+                        <InfoCircleOutlined className="mr-1" /> Nội dung tin tức
+                        nên có ít nhất 20 ký tự
+                      </Text>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-span-2">
+                  <div className="form-group">
+                    <label htmlFor="status" className="form-label">
+                      Trạng Thái
+                    </label>
+                    <Radio.Group
+                      onChange={onChangeStatus}
+                      value={valueStatus}
+                      className="flex flex-wrap gap-4">
+                      <Radio value={false} className="status-radio private">
+                        <div className="radio-card-content">
+                          <LockOutlined className="text-lg text-red-500" />
+                          <span>Private</span>
+                        </div>
+                      </Radio>
+                      <Radio value={true} className="status-radio public">
+                        <div className="radio-card-content">
+                          <UnlockOutlined className="text-lg text-green-500" />
+                          <span>Public</span>
+                        </div>
+                      </Radio>
+                    </Radio.Group>
+                    <Text type="secondary" className="text-xs block mt-2">
+                      {valueStatus
+                        ? "Tin tức sẽ được hiển thị công khai trên trang web"
+                        : "Tin tức sẽ được lưu nháp và không hiển thị cho người dùng"}
+                    </Text>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3 mt-8 pt-4 border-t">
+                <Button
+                  onClick={() => {
+                    setEditOpen(false);
+                    resetEditForm();
+                  }}
+                  size="large"
+                  className="cancel-btn">
+                  Hủy bỏ
+                </Button>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  size="large"
+                  className="submit-btn"
+                  icon={<EditOutlined />}
+                  loading={loading}>
+                  Cập Nhật Tin Tức
+                </Button>
+              </div>
+            </form>
+          )}
+        </div>
+      </Modal>
+
       {/* Custom CSS */}
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
@@ -1756,6 +2134,67 @@ function News() {
         .add-news-modal .form-input:focus {
           border-color: #4f46e5;
           box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+        }
+
+        /* Add edit-news-modal styles to ensure scrolling works */
+        .edit-news-modal .ant-modal-content {
+          max-height: 90vh;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+        }
+        
+        .edit-news-modal .ant-modal-body {
+          padding: 0;
+          flex: 1;
+          overflow: auto !important;
+          max-height: 75vh;
+          overflow-y: auto !important;
+          padding-right: 12px;
+        }
+        
+        .edit-news-modal .modal-scrollable-content {
+          padding: 20px;
+          padding-right: 12px;
+          height: auto;
+          min-height: 100px;
+        }
+        
+        /* Adjust modal position */
+        .edit-news-modal {
+          top: 5vh;
+        }
+        
+        /* Better scroll visibility */
+        .ant-modal-body::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+        }
+        
+        .ant-modal-body::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 10px;
+        }
+        
+        .ant-modal-body::-webkit-scrollbar-thumb {
+          background: #c1c1c1;
+          border-radius: 10px;
+        }
+        
+        .ant-modal-body::-webkit-scrollbar-thumb:hover {
+          background: #a8a8a8;
+        }
+        
+        /* Improved editor container for better visibility */
+        .edit-news-modal .editor-container {
+          max-height: 300px;
+          overflow: visible;
+        }
+        
+        /* Make sure the ReactQuill editor doesn't overflow */
+        .edit-news-modal .news-editor .ql-container {
+          max-height: 250px;
+          overflow-y: auto;
         }
       `}</style>
     </div>

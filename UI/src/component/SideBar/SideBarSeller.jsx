@@ -6,6 +6,7 @@ import {
   DashboardOutlined,
   FileTextOutlined,
   FlagOutlined,
+  OrderedListOutlined,
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 
@@ -104,12 +105,18 @@ function SideBarSeller({ props, collapsed, onCollapse }) {
                     </Link>
                   ),
                 },
-                // {
-                //   key: "4",
-                //   icon: (
-                //     <Badge count={5} size="small" offset={[5, 0]}>
-                //       <TeamOutlined style={{ fontSize: "18px" }} />
-                //     </Badge>
+                {
+                  key: "4",
+                  icon: <OrderedListOutlined style={{ fontSize: "18px" }} />,
+                  label: (
+                    <Link
+                      to="/seller/order-managerment"
+                      rel="noopener noreferrer"
+                      className="sidebar-link">
+                      Quản lý đơn hàng
+                    </Link>
+                  ),
+                },
                 //   ),
                 //   label: (
                 //     <Link

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   FaSearch,
   FaHeart,
@@ -16,24 +15,27 @@ import Footer from "../../../component/Footer/Footer";
 import { getItems } from "../../../utils/service";
 
 function Products() {
+  const navigate = useNavigate();
+  const { category } = useParams();
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
-    category: "all",
-    priceRange: "all",
+    product_category: category || "all",
+    product_price: "all",
     rating: "all",
   });
-  const [sortBy, setSortBy] = useState("newest");
   const [favorites, setFavorites] = useState([]);
   const [error, setError] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [ratings, setRatings] = useState([]);
 
   // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await getItems("/product/all-products");
-
         setProducts(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -55,56 +57,44 @@ function Products() {
     });
   }, []);
 
+  // Fetch filter options
+  useEffect(() => {
+    const fetchFilterOptions = async () => {
+      try {
+        const [categories, ratings] = await Promise.all([
+          getItems("product/category"),
+          getItems("product/rating"),
+        ]);
+
+        if (categories.status === 200) {
+          setCategories(categories.data);
+        }
+
+        if (ratings.status === 200) {
+          setRatings(ratings.data);
+        }
+      } catch (error) {
+        console.error("Error fetching filter options:", error);
+      }
+    };
+    fetchFilterOptions();
+  }, []);
+
   // Filter products
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.product_name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesCategory =
-      filters.category === "all" ||
-      product.product_category === filters.category;
-    const matchesPriceRange =
-      filters.priceRange === "all" ||
-      matchesPriceFilter(product.product_price, filters.priceRange);
+      filters.product_category == "all" ||
+      product.product_category == filters.product_category;
+
     const matchesRating =
-      filters.rating === "all" ||
+      filters.rating == "all" ||
       (product.rating || 0) >= parseInt(filters.rating);
 
-    return (
-      matchesSearch && matchesCategory && matchesPriceRange && matchesRating
-    );
+    return matchesSearch && matchesCategory && matchesRating;
   });
-
-  // Sort products
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    switch (sortBy) {
-      case "price-low":
-        return a.price - b.price;
-      case "price-high":
-        return b.price - a.price;
-      case "rating":
-        return (b.rating || 0) - (a.rating || 0);
-      case "newest":
-      default:
-        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
-    }
-  });
-
-  const matchesPriceFilter = (price, range) => {
-    const numPrice = Number(price) || 0;
-    switch (range) {
-      case "under-50":
-        return numPrice < 50;
-      case "50-100":
-        return numPrice >= 50 && numPrice <= 100;
-      case "100-200":
-        return numPrice > 100 && numPrice <= 200;
-      case "over-200":
-        return numPrice > 200;
-      default:
-        return true;
-    }
-  };
 
   // Toggle favorite
   const toggleFavorite = (productId) => {
@@ -113,6 +103,16 @@ function Products() {
         ? prev.filter((id) => id !== productId)
         : [...prev, productId]
     );
+  };
+
+  // Handle category change
+  const handleCategoryChange = (selectedCategory) => {
+    setFilters({ ...filters, product_category: selectedCategory });
+    if (selectedCategory === "all") {
+      navigate("/products");
+    } else {
+      navigate(`/products/category/${selectedCategory}`);
+    }
   };
 
   // Loading skeleton
@@ -176,27 +176,39 @@ function Products() {
             <div className="flex flex-wrap gap-4">
               <select
                 className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
-                value={filters.category}
-                onChange={(e) =>
-                  setFilters({ ...filters, category: e.target.value })
-                }>
+                value={filters.product_category}
+                onChange={(e) => handleCategoryChange(e.target.value)}>
                 <option value="all">Tất Cả Danh Mục</option>
+                {categories && categories.length > 0 ? (
+                  categories.map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))
+                ) : (
+                  <option value="" disabled>
+                    Không có danh mục
+                  </option>
+                )}
               </select>
-
               <select
                 className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
-                value={filters.priceRange}
+                value={filters.rating}
                 onChange={(e) =>
-                  setFilters({ ...filters, priceRange: e.target.value })
+                  setFilters({ ...filters, rating: e.target.value })
                 }>
-                <option value="all">Tất Cả Giá</option>
-              </select>
-
-              <select
-                className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}>
-                <option value="newest">Mới Nhất</option>
+                <option value="all">Tất Cả Đánh Giá</option>
+                {ratings && ratings.length > 0 ? (
+                  ratings.map((rating, index) => (
+                    <option key={index} value={rating}>
+                      {rating} sao
+                    </option>
+                  ))
+                ) : (
+                  <option value="" disabled>
+                    Không có đánh giá
+                  </option>
+                )}
               </select>
             </div>
           </div>
@@ -204,7 +216,7 @@ function Products() {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {sortedProducts.map((product) => (
+          {filteredProducts.map((product) => (
             <div
               key={product._id}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
@@ -281,7 +293,7 @@ function Products() {
         </div>
 
         {/* Empty State */}
-        {sortedProducts.length === 0 && !error && (
+        {filteredProducts.length === 0 && !error && (
           <div className="text-center py-12">
             <FaSearch className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">

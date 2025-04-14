@@ -27,6 +27,9 @@ import Products from "./page/Product/Products/Products";
 import SellerProducts from "./page/Seller/Products/Products";
 import CustomerChat from "./page/Seller/Customer/CustomerChat";
 import ProductDetail from "./page/Product/ProductDetail/ProductDetail";
+import Checkout from "./page/Product/Checkout/Checkout";
+import OrderManagerment from "./page/Seller/Order/OrderManagerment";
+
 function App() {
   return (
     <BrowserRouter>
@@ -44,13 +47,18 @@ function App() {
         <Route path="/all-news/" element={<AllNews />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/products" element={<Products />} />
-
+        <Route path="/products/category/:category" element={<Products />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/become-seller/" element={<RegisterSeller />} />
         {/* Only Seller */}
         <Route exact path="/" element={<SellerRoute />}>
           <Route path="seller/dashboard" element={<DashBoardSeller />} />
           <Route path="seller/products-manager" element={<SellerProducts />} />
           <Route path="seller/customer-chat" element={<CustomerChat />} />
+          <Route
+            path="seller/order-managerment"
+            element={<OrderManagerment />}
+          />
         </Route>
         {/* Only Admin */}
         <Route exact path="/" element={<AdminRoute />}>

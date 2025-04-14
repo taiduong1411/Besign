@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./header.css";
-import { Dropdown, Avatar, Menu, Modal, message } from "antd";
+import { Dropdown, Avatar, Menu, Modal, message, Table, Tag } from "antd";
 import {
   DownOutlined,
   UserOutlined,
@@ -13,7 +13,7 @@ import { UserContext } from "../../context/UserContext";
 import { useForm } from "react-hook-form";
 import upload from "../../utils/upload";
 import "./form.css";
-import { addItems } from "../../utils/service";
+import { addItems, getItems } from "../../utils/service";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
@@ -21,6 +21,9 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [navScroll, setNav] = useState(false);
   const [updateProfileModal, setUpdateProfileModal] = useState(false);
+  const [orderHistoryModal, setOrderHistoryModal] = useState(false);
+  const [orderHistory, setOrderHistory] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState("");
   const location = useLocation();
 
@@ -28,6 +31,25 @@ const Navbar = () => {
 
   const openUpdateProfileModal = () => setUpdateProfileModal(true);
   const closeUpdateProfileModal = () => setUpdateProfileModal(false);
+
+  const openOrderHistoryModal = async () => {
+    setOrderHistoryModal(true);
+    setLoading(true);
+    try {
+      const response = await getItems(`user/order-history/${userData._id}`);
+      if (response.status === 200) {
+        setOrderHistory(response.data);
+      } else {
+        message.error("Không thể tải lịch sử đơn hàng");
+      }
+    } catch (error) {
+      message.error("Có lỗi xảy ra khi tải lịch sử đơn hàng");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const closeOrderHistoryModal = () => setOrderHistoryModal(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -91,13 +113,11 @@ const Navbar = () => {
   const menuItems = [
     {
       key: "0",
-      icon: userData && userData.level == "1" ? <HistoryOutlined /> : "",
+      icon: userData && userData.level == "1" ? <HistoryOutlined /> : null,
       label:
         userData && userData.level == "1" ? (
-          <Link to="/become-seller">Trở thành người bán</Link>
-        ) : (
-          <Link to=""></Link>
-        ),
+          <div onClick={openOrderHistoryModal}>Lịch sử đơn hàng</div>
+        ) : null,
     },
     {
       key: "1",
@@ -123,11 +143,61 @@ const Navbar = () => {
 
   const navLinks = [
     { path: "/", label: "Về Chúng Tôi" },
+    { path: "/products", label: "Sản Phẩm" },
     { path: "/all-news", label: "Tin Tức" },
     { path: "/contact-us", label: "Liên Hệ" },
   ];
 
   const isActive = (path) => location.pathname === path;
+
+  const orderColumns = [
+    {
+      title: "Mã đơn hàng",
+      dataIndex: "order_name",
+      key: "order_name",
+      render: (text) => <span className="font-medium">{text}</span>,
+    },
+    {
+      title: "Ngày đặt",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (text) => new Date(text).toLocaleDateString(),
+    },
+    {
+      title: "Sản phẩm",
+      dataIndex: "productId",
+      key: "productId",
+      render: (text) => (
+        <span className="font-medium">{text.product_name}</span>
+      ),
+    },
+    {
+      title: "Tổng tiền",
+      dataIndex: "totalAmount",
+      key: "totalAmount",
+      render: (text) => (
+        <span className="font-medium text-green-600">
+          {text.toLocaleString()}đ
+        </span>
+      ),
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => {
+        let color = "green";
+        let text = "Đã xác nhận";
+        if (status == false) {
+          color = "orange";
+          text = "Chờ xác nhận";
+        } else if (status == true) {
+          text = "Đã xác nhận";
+        }
+        return <Tag color={color}>{text}</Tag>;
+      },
+    },
+  ];
 
   return (
     <header
@@ -562,6 +632,29 @@ const Navbar = () => {
             </button>
           </div>
         </form>
+      </Modal>
+
+      {/* Order History Modal */}
+      <Modal
+        title={
+          <div className="flex items-center space-x-3">
+            <HistoryOutlined className="text-blue-600 text-xl" />
+            <h3 className="text-lg font-medium">Lịch sử đơn hàng</h3>
+          </div>
+        }
+        open={orderHistoryModal}
+        onCancel={closeOrderHistoryModal}
+        footer={null}
+        width={800}
+        centered>
+        <Table
+          columns={orderColumns}
+          dataSource={orderHistory}
+          loading={loading}
+          rowKey="_id"
+          pagination={{ pageSize: 5 }}
+          scroll={{ x: true }}
+        />
       </Modal>
     </header>
   );

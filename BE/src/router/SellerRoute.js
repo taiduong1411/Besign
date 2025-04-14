@@ -8,7 +8,13 @@ router.get("/seller-products", SellerController.getAllProductsBySeller);
 router.get("/public-products", SellerController.getPublicProducts);
 router.get("/product/:id", SellerController.getProductById);
 router.post("/create-product", sellerAuth, SellerController.createProduct);
-
+router.get("/orders", sellerAuth, SellerController.getOrders);
+router.post(
+  "/update-order-status",
+  sellerAuth,
+  SellerController.updateOrderStatus
+);
+// router.post("/delete-order", sellerAuth, SellerController.deleteOrder);
 // Add new routes for updating and deleting products
 router.put("/update-product/:id", sellerAuth, SellerController.updateProduct);
 router.post(

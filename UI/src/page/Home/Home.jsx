@@ -144,49 +144,32 @@ function Home() {
   }, []);
 
   return (
-    <div className="font-sans bg-slate-50 dark:bg-gray-900 text-gray-900 dark:text-white perspective-1000">
+    <div className="font-sans bg-gray-900 text-white perspective-1000">
       {/* Scroll Progress Indicator */}
       <div className="scroll-progress-bar"></div>
-
-      {/* Navigation */}
       <Navbar />
-
-      {/* Hero Section - Rich gradient with 3D effect */}
       <div
         ref={heroRef}
-        className="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-900 dark:to-purple-800 relative overflow-hidden">
-        <div className="hero-content">
+        className="bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 relative overflow-hidden min-h-screen flex items-center">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[url('/hero-pattern.svg')] opacity-30"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
+        </div>
+        <div className="hero-content relative z-10 w-full">
           <Feature />
           <TrustedBy />
-        </div>
-
-        {/* 3D floating particles */}
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-white opacity-10"
-              style={{
-                width: `${Math.random() * 30 + 10}px`,
-                height: `${Math.random() * 30 + 10}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animation: `float-${i % 3} ${
-                  Math.random() * 10 + 10
-                }s infinite ease-in-out`,
-                animationDelay: `${Math.random() * 5}s`,
-              }}
-            />
-          ))}
         </div>
       </div>
 
       {/* Intro Cards - Soft gradient */}
       <div
         ref={introSectionRef}
-        className="py-16 bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-100 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800">
-        <div className="intro-card-section">
-          <h2 className="text-center text-2xl font-bold mb-4 mt-10">
+        className="py-24 bg-gradient-to-b from-gray-900 to-gray-800 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        </div>
+        <div className="intro-card-section relative z-10">
+          <h2 className="text-center text-4xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
             Sản Phẩm Mới Nhất
           </h2>
           <IntroCard />
@@ -196,129 +179,123 @@ function Home() {
       {/* Services Section - White with gradient top */}
       <div
         ref={servicesRef}
-        className="py-20 px-4 md:px-0 bg-white dark:bg-gray-900 relative">
-        <div className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-xl w-[90%] mx-auto transform-style-3d">
-          <div className="flex flex-col lg:flex-row">
-            {/* Left Column - Sticky Content with gradient background */}
-            <div className="w-full lg:w-2/5 p-8 lg:p-16 bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-purple-900/20 gsap-reveal">
-              <div
-                className="lg:sticky lg:top-24"
-                style={{ height: "fit-content" }}>
-                <span className="inline-block px-4 py-1 bg-indigo-600 text-white text-sm font-semibold rounded-full mb-4">
-                  Dịch Vụ Của Chúng Tôi
-                </span>
-                <h2 className="text-4xl md:text-5xl font-bold text-indigo-900 dark:text-white leading-tight mb-6">
-                  Đồng hành cùng khách hàng trong mọi bước của hành trình hiện
-                  thực hóa thiết kế nghệ thuật.
-                </h2>
-                <div className="mt-8">
-                  <Link to="/services">
-                    <button className="group flex items-center text-indigo-600 dark:text-indigo-400 font-semibold hover:text-indigo-800 dark:hover:text-indigo-300 transition-all duration-300">
-                      Khám phá tất cả dịch vụ
-                      <FaArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-                    </button>
-                  </Link>
+        className="py-32 px-4 md:px-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl overflow-hidden shadow-2xl border border-gray-700/50 backdrop-blur-xl">
+            <div className="flex flex-col lg:flex-row">
+              {/* Left Column - Sticky Content with gradient background */}
+              <div className="w-full lg:w-2/5 p-8 lg:p-16 bg-gradient-to-br from-indigo-900/20 to-purple-900/20 gsap-reveal">
+                <div
+                  className="lg:sticky lg:top-24"
+                  style={{ height: "fit-content" }}>
+                  <span className="inline-block px-4 py-1 bg-indigo-600 text-white text-sm font-semibold rounded-full mb-4">
+                    Dịch Vụ Của Chúng Tôi
+                  </span>
+                  <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                    Đồng hành cùng khách hàng trong mọi bước của hành trình hiện
+                    thực hóa thiết kế nghệ thuật.
+                  </h2>
+                  <div className="mt-8">
+                    <Link to="/services">
+                      <button className="group flex items-center text-indigo-400 font-semibold hover:text-indigo-300 transition-all duration-300">
+                        Khám phá tất cả dịch vụ
+                        <FaArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Right Column - Service Cards */}
-            <div className="w-full lg:w-3/5 p-8 lg:p-16 bg-white dark:bg-gray-800 lg:rounded-l-3xl">
-              <div className="space-y-8">
-                {/* Service Card 1 */}
-                <div
-                  ref={(el) => (serviceCardsRef.current[0] = el)}
-                  className="p-8 rounded-2xl shadow-md bg-white dark:bg-gray-700 hover:shadow-lg transition-all duration-300 border-l-4 border-indigo-500 service-card">
-                  <h3 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
-                    Tư Vấn Chuyên Sâu
-                  </h3>
-                  <ul className="space-y-3">
-                    {[
-                      "Lắng nghe và hiểu rõ nhu cầu của khách hàng.",
-                      "Cung cấp giải pháp thiết kế sáng tạo và phù hợp.",
-                      "Hỗ trợ khách hàng xác định và phát triển ý tưởng thiết kế.",
-                      "Cung cấp thông tin và kiến thức chuyên môn đáng tin cậy.",
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-start">
-                        <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
-                        <span className="text-gray-700 dark:text-gray-300">
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              {/* Right Column - Service Cards */}
+              <div className="w-full lg:w-3/5 p-8 lg:p-16 bg-gray-800 lg:rounded-l-3xl">
+                <div className="space-y-8">
+                  {/* Service Card 1 */}
+                  <div
+                    ref={(el) => (serviceCardsRef.current[0] = el)}
+                    className="p-8 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 hover:border-indigo-500/50 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-2xl">
+                    <h3 className="text-2xl font-bold text-white mb-4">
+                      Tư Vấn Chuyên Sâu
+                    </h3>
+                    <ul className="space-y-3">
+                      {[
+                        "Lắng nghe và hiểu rõ nhu cầu của khách hàng.",
+                        "Cung cấp giải pháp thiết kế sáng tạo và phù hợp.",
+                        "Hỗ trợ khách hàng xác định và phát triển ý tưởng thiết kế.",
+                        "Cung cấp thông tin và kiến thức chuyên môn đáng tin cậy.",
+                      ].map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
+                          <span className="text-gray-300">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-                {/* Service Card 2 */}
-                <div
-                  ref={(el) => (serviceCardsRef.current[1] = el)}
-                  className="p-8 rounded-2xl shadow-md bg-white dark:bg-gray-700 hover:shadow-lg transition-all duration-300 border-l-4 border-purple-500 service-card">
-                  <h3 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
-                    Hợp Tác Chặt Chẽ
-                  </h3>
-                  <ul className="space-y-3">
-                    {[
-                      "Duy trì mối quan hệ làm việc cởi mở và tích cực.",
-                      "Linh hoạt trong việc thay đổi và điều chỉnh dự án theo yêu cầu của khách hàng.",
-                      "Đảm bảo sự hài lòng và hiểu biết về tiến độ dự án.",
-                      "Cung cấp phản hồi nhanh chóng và hiệu quả đối với tất cả ý kiến và yêu cầu của khách hàng.",
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-start">
-                        <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
-                        <span className="text-gray-700 dark:text-gray-300">
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                  {/* Service Card 2 */}
+                  <div
+                    ref={(el) => (serviceCardsRef.current[1] = el)}
+                    className="p-8 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-2xl">
+                    <h3 className="text-2xl font-bold text-white mb-4">
+                      Hợp Tác Chặt Chẽ
+                    </h3>
+                    <ul className="space-y-3">
+                      {[
+                        "Duy trì mối quan hệ làm việc cởi mở và tích cực.",
+                        "Linh hoạt trong việc thay đổi và điều chỉnh dự án theo yêu cầu của khách hàng.",
+                        "Đảm bảo sự hài lòng và hiểu biết về tiến độ dự án.",
+                        "Cung cấp phản hồi nhanh chóng và hiệu quả đối với tất cả ý kiến và yêu cầu của khách hàng.",
+                      ].map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
+                          <span className="text-gray-300">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-                {/* Service Card 3 */}
-                <div
-                  ref={(el) => (serviceCardsRef.current[2] = el)}
-                  className="p-8 rounded-2xl shadow-md bg-white dark:bg-gray-700 hover:shadow-lg transition-all duration-300 border-l-4 border-blue-500 service-card">
-                  <h3 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
-                    Chất Lượng Sản Phẩm
-                  </h3>
-                  <ul className="space-y-3">
-                    {[
-                      "Tuân thủ các tiêu chuẩn chất lượng nghiêm ngặt nhất trong quá trình thiết kế.",
-                      "Sử dụng vật liệu và công nghệ hiện đại nhất.",
-                      "Kiểm tra chất lượng thường xuyên và chi tiết trước khi giao hàng.",
-                      "Cam kết cung cấp các thiết kế chất lượng cao đáp ứng mọi yêu cầu của khách hàng.",
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-start">
-                        <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
-                        <span className="text-gray-700 dark:text-gray-300">
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                  {/* Service Card 3 */}
+                  <div
+                    ref={(el) => (serviceCardsRef.current[2] = el)}
+                    className="p-8 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-2xl">
+                    <h3 className="text-2xl font-bold text-white mb-4">
+                      Chất Lượng Sản Phẩm
+                    </h3>
+                    <ul className="space-y-3">
+                      {[
+                        "Tuân thủ các tiêu chuẩn chất lượng nghiêm ngặt nhất trong quá trình thiết kế.",
+                        "Sử dụng vật liệu và công nghệ hiện đại nhất.",
+                        "Kiểm tra chất lượng thường xuyên và chi tiết trước khi giao hàng.",
+                        "Cam kết cung cấp các thiết kế chất lượng cao đáp ứng mọi yêu cầu của khách hàng.",
+                      ].map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
+                          <span className="text-gray-300">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-                {/* Service Card 4 */}
-                <div
-                  ref={(el) => (serviceCardsRef.current[3] = el)}
-                  className="p-8 rounded-2xl shadow-md bg-white dark:bg-gray-700 hover:shadow-lg transition-all duration-300 border-l-4 border-green-500 service-card">
-                  <h3 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
-                    Hỗ Trợ Toàn Diện
-                  </h3>
-                  <ul className="space-y-3">
-                    {[
-                      "Cung cấp các dịch vụ hậu mãi toàn diện như bảo trì, nâng cấp và sửa chữa.",
-                      "Luôn sẵn sàng hỗ trợ khách hàng trong mọi vấn đề liên quan đến thiết kế.",
-                      "Đào tạo và hướng dẫn khách hàng cách sử dụng các thiết kế.",
-                      "Tạo môi trường làm việc thân thiện và hỗ trợ để đảm bảo sự hài lòng tối đa của khách hàng.",
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-start">
-                        <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
-                        <span className="text-gray-700 dark:text-gray-300">
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Service Card 4 */}
+                  <div
+                    ref={(el) => (serviceCardsRef.current[3] = el)}
+                    className="p-8 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 hover:border-green-500/50 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-2xl">
+                    <h3 className="text-2xl font-bold text-white mb-4">
+                      Hỗ Trợ Toàn Diện
+                    </h3>
+                    <ul className="space-y-3">
+                      {[
+                        "Cung cấp các dịch vụ hậu mãi toàn diện như bảo trì, nâng cấp và sửa chữa.",
+                        "Luôn sẵn sàng hỗ trợ khách hàng trong mọi vấn đề liên quan đến thiết kế.",
+                        "Đào tạo và hướng dẫn khách hàng cách sử dụng các thiết kế.",
+                        "Tạo môi trường làm việc thân thiện và hỗ trợ để đảm bảo sự hài lòng tối đa của khách hàng.",
+                      ].map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
+                          <span className="text-gray-300">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -329,8 +306,11 @@ function Home() {
       {/* Why Us Section - Subtle gradient */}
       <div
         ref={whyUsRef}
-        className="py-20 px-4 md:px-0 bg-gradient-to-br from-slate-50 via-indigo-50/30 to-indigo-100/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
-        <div className="max-w-7xl mx-auto">
+        className="py-32 px-4 md:px-0 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[url('/pattern-grid.svg')] opacity-5"></div>
+        </div>
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16 gsap-reveal">
             <span className="inline-block px-4 py-1 bg-indigo-600 text-white text-sm font-semibold rounded-full mb-4">
               Tại Sao Chọn Chúng Tôi?
@@ -344,13 +324,13 @@ function Home() {
             <div className="w-full lg:w-1/2 p-4">
               <div className="space-y-4">
                 {/* Accordion 1 */}
-                <details className="group bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                <details className="group bg-gray-800 rounded-xl shadow-md overflow-hidden">
                   <summary className="flex items-center justify-between cursor-pointer p-6 focus:outline-none">
                     <div className="flex items-center gap-4 w-full">
-                      <div className="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
-                        <FaStar className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                      <div className="w-12 h-12 rounded-full bg-indigo-900 flex items-center justify-center">
+                        <FaStar className="w-6 h-6 text-indigo-400" />
                       </div>
-                      <h3 className="text-xl font-bold text-indigo-900 dark:text-white text-center flex-grow">
+                      <h3 className="text-xl font-bold text-white text-center flex-grow">
                         Chất Lượng Thiết Kế
                       </h3>
                     </div>
@@ -367,7 +347,7 @@ function Home() {
                       />
                     </svg>
                   </summary>
-                  <div className="px-6 pb-6 text-gray-700 dark:text-gray-300 text-left">
+                  <div className="px-6 pb-6 text-gray-300 text-left">
                     <p>
                       Chúng tôi cam kết cung cấp các thiết kế nghệ thuật chất
                       lượng cao. Chúng tôi không chỉ tập trung vào việc đáp ứng
@@ -380,12 +360,12 @@ function Home() {
                 </details>
 
                 {/* Accordion 2 */}
-                <details className="group bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                <details className="group bg-gray-800 rounded-xl shadow-md overflow-hidden">
                   <summary className="flex items-center justify-between cursor-pointer p-6 focus:outline-none">
                     <div className="flex items-center gap-4 w-full">
-                      <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-purple-900 flex items-center justify-center">
                         <svg
-                          className="w-6 h-6 text-purple-600 dark:text-purple-400"
+                          className="w-6 h-6 text-purple-400"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -398,7 +378,7 @@ function Home() {
                           />
                         </svg>
                       </div>
-                      <h3 className="text-xl font-bold text-indigo-900 dark:text-white text-center flex-grow">
+                      <h3 className="text-xl font-bold text-white text-center flex-grow">
                         Cam Kết Đổi Mới
                       </h3>
                     </div>
@@ -415,7 +395,7 @@ function Home() {
                       />
                     </svg>
                   </summary>
-                  <div className="px-6 pb-6 text-gray-700 dark:text-gray-300 text-left">
+                  <div className="px-6 pb-6 text-gray-300 text-left">
                     <p>
                       Chúng tôi liên tục nỗ lực tăng cường đổi mới và phát triển
                       trong mọi lĩnh vực hoạt động. Từ việc áp dụng công nghệ
@@ -427,13 +407,13 @@ function Home() {
                 </details>
 
                 {/* Accordion 3 */}
-                <details className="group bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                <details className="group bg-gray-800 rounded-xl shadow-md overflow-hidden">
                   <summary className="flex items-center justify-between cursor-pointer p-6 focus:outline-none">
                     <div className="flex items-center gap-4 w-full">
-                      <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-                        <FaUsers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                      <div className="w-12 h-12 rounded-full bg-blue-900 flex items-center justify-center">
+                        <FaUsers className="w-6 h-6 text-blue-400" />
                       </div>
-                      <h3 className="text-xl font-bold text-indigo-900 dark:text-white text-center flex-grow">
+                      <h3 className="text-xl font-bold text-white text-center flex-grow">
                         Cam Kết Với Khách Hàng
                       </h3>
                     </div>
@@ -450,7 +430,7 @@ function Home() {
                       />
                     </svg>
                   </summary>
-                  <div className="px-6 pb-6 text-gray-700 dark:text-gray-300 text-left">
+                  <div className="px-6 pb-6 text-gray-300 text-left">
                     <p>
                       Khách hàng luôn là ưu tiên hàng đầu của chúng tôi trong
                       mọi quyết định. Chúng tôi không chỉ cung cấp thiết kế mà
@@ -463,12 +443,12 @@ function Home() {
                 </details>
 
                 {/* Accordion 4 */}
-                <details className="group bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                <details className="group bg-gray-800 rounded-xl shadow-md overflow-hidden">
                   <summary className="flex items-center justify-between cursor-pointer p-6 focus:outline-none">
                     <div className="flex items-center gap-4 w-full">
-                      <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-green-900 flex items-center justify-center">
                         <svg
-                          className="w-6 h-6 text-green-600 dark:text-green-400"
+                          className="w-6 h-6 text-green-400"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -481,7 +461,7 @@ function Home() {
                           />
                         </svg>
                       </div>
-                      <h3 className="text-xl font-bold text-indigo-900 dark:text-white text-center flex-grow">
+                      <h3 className="text-xl font-bold text-white text-center flex-grow">
                         Cam Kết Với Cộng Đồng & Môi Trường
                       </h3>
                     </div>
@@ -498,7 +478,7 @@ function Home() {
                       />
                     </svg>
                   </summary>
-                  <div className="px-6 pb-6 text-gray-700 dark:text-gray-300 text-left">
+                  <div className="px-6 pb-6 text-gray-300 text-left">
                     <p>
                       Chúng tôi không chỉ là một doanh nghiệp hướng đến lợi
                       nhuận mà còn có trách nhiệm với cộng đồng và môi trường
@@ -529,112 +509,116 @@ function Home() {
       {/* Become a Seller Section - Rich gradient */}
       <div
         ref={sellerSectionRef}
-        className="py-20 px-4 md:px-8 bg-white dark:bg-gray-800">
-        <div className="max-w-7xl mx-auto rounded-3xl overflow-hidden shadow-2xl gsap-reveal">
-          <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 dark:from-indigo-800 dark:via-purple-800 dark:to-indigo-900 py-16 px-6 md:px-16 relative">
-            {/* 3D spheres background */}
-            <div className="absolute inset-0 overflow-hidden">
-              {[...Array(6)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute rounded-full bg-white opacity-5"
-                  style={{
-                    width: `${Math.random() * 300 + 100}px`,
-                    height: `${Math.random() * 300 + 100}px`,
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                    filter: "blur(50px)",
-                    transform: `translateZ(${Math.random() * 100}px)`,
-                  }}
-                />
-              ))}
-            </div>
+        className="py-32 px-4 md:px-8 bg-gradient-to-br from-gray-900 to-gray-800 relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="rounded-3xl overflow-hidden shadow-2xl border border-indigo-500/20 backdrop-blur-xl">
+            <div className="bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900 py-16 px-6 md:px-16 relative">
+              {/* 3D spheres background */}
+              <div className="absolute inset-0 overflow-hidden">
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute rounded-full bg-white opacity-5"
+                    style={{
+                      width: `${Math.random() * 300 + 100}px`,
+                      height: `${Math.random() * 300 + 100}px`,
+                      left: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 100}%`,
+                      filter: "blur(50px)",
+                      transform: `translateZ(${Math.random() * 100}px)`,
+                    }}
+                  />
+                ))}
+              </div>
 
-            <div className="text-center mb-12 gsap-reveal">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Trở Thành Người Bán
-              </h2>
-              <p className="text-xl md:text-2xl text-white opacity-90 max-w-2xl mx-auto">
-                Tham gia nền tảng của chúng tôi và bắt đầu bán sản phẩm của bạn
-                cho khách hàng trên toàn thế giới
-              </p>
-            </div>
+              <div className="text-center mb-12 gsap-reveal">
+                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                  Trở Thành Người Bán
+                </h2>
+                <p className="text-xl md:text-2xl text-white opacity-90 max-w-2xl mx-auto">
+                  Tham gia nền tảng của chúng tôi và bắt đầu bán sản phẩm của
+                  bạn cho khách hàng trên toàn thế giới
+                </p>
+              </div>
 
-            <div className="max-w-7xl mx-auto">
-              <Slider {...settings} className="seller-benefits-slider">
-                {/* Benefit Card 1 */}
-                <div className="px-4">
-                  <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 h-full transform-style-3d">
-                    <div className="h-48 bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
-                      <img
-                        src="./dollar.png"
-                        alt="Tiếp cận đối tượng rộng lớn hơn"
-                        className="h-32 w-auto object-contain"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-3">
-                        Tiếp Cận Đối Tượng Rộng Lớn Hơn
-                      </h3>
-                      <p className="text-gray-600">
-                        Mở rộng cơ sở khách hàng của bạn bằng cách giới thiệu
-                        sản phẩm của bạn đến khách hàng toàn cầu.
-                      </p>
+              <div className="max-w-7xl mx-auto">
+                <Slider {...settings} className="seller-benefits-slider">
+                  {/* Benefit Card 1 */}
+                  <div className="px-4">
+                    <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 h-full transform-style-3d">
+                      <div className="h-48 bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
+                        <img
+                          src="./dollar.png"
+                          alt="Tiếp cận đối tượng rộng lớn hơn"
+                          className="h-32 w-auto object-contain"
+                        />
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-gray-900 mb-3">
+                          Tiếp Cận Đối Tượng Rộng Lớn Hơn
+                        </h3>
+                        <p className="text-gray-600">
+                          Mở rộng cơ sở khách hàng của bạn bằng cách giới thiệu
+                          sản phẩm của bạn đến khách hàng toàn cầu.
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Benefit Card 2 */}
-                <div className="px-4">
-                  <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 h-full">
-                    <div className="h-48 bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center">
-                      <img
-                        src="./pic1.png"
-                        alt="Tăng doanh thu của bạn"
-                        className="h-32 w-auto object-contain"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-3">
-                        Tăng Doanh Thu Của Bạn Mỗi Ngày
-                      </h3>
-                      <p className="text-gray-600">
-                        Thúc đẩy doanh số và lợi nhuận của bạn bằng cách tiếp
-                        cận các thị trường mới và phân khúc khách hàng mới.
-                      </p>
+                  {/* Benefit Card 2 */}
+                  <div className="px-4">
+                    <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 h-full">
+                      <div className="h-48 bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center">
+                        <img
+                          src="./pic1.png"
+                          alt="Tăng doanh thu của bạn"
+                          className="h-32 w-auto object-contain"
+                        />
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-gray-900 mb-3">
+                          Tăng Doanh Thu Của Bạn Mỗi Ngày
+                        </h3>
+                        <p className="text-gray-600">
+                          Thúc đẩy doanh số và lợi nhuận của bạn bằng cách tiếp
+                          cận các thị trường mới và phân khúc khách hàng mới.
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Benefit Card 3 */}
-                <div className="px-4">
-                  <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 h-full">
-                    <div className="h-48 bg-gradient-to-r from-pink-400 to-pink-600 flex items-center justify-center">
-                      <img
-                        src="./pic1.png"
-                        alt="Xây dựng thương hiệu của bạn"
-                        className="h-32 w-auto object-contain"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-3">
-                        Xây Dựng Thương Hiệu Của Bạn
-                      </h3>
-                      <p className="text-gray-600">
-                        Tăng cường sự hiện diện và uy tín thương hiệu của bạn
-                        bằng cách tận dụng uy tín của nền tảng chúng tôi.
-                      </p>
+                  {/* Benefit Card 3 */}
+                  <div className="px-4">
+                    <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 h-full">
+                      <div className="h-48 bg-gradient-to-r from-pink-400 to-pink-600 flex items-center justify-center">
+                        <img
+                          src="./pic1.png"
+                          alt="Xây dựng thương hiệu của bạn"
+                          className="h-32 w-auto object-contain"
+                        />
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-gray-900 mb-3">
+                          Xây Dựng Thương Hiệu Của Bạn
+                        </h3>
+                        <p className="text-gray-600">
+                          Tăng cường sự hiện diện và uy tín thương hiệu của bạn
+                          bằng cách tận dụng uy tín của nền tảng chúng tôi.
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Slider>
+                </Slider>
 
-              <div className="mt-16 text-center gsap-reveal">
-                <Link to="/become-seller">
-                  <button className="px-8 py-4 bg-white text-indigo-600 font-bold rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl relative overflow-hidden seller-button">
-                    <span className="relative z-10">Đăng Ký Làm Người Bán</span>
-                  </button>
-                </Link>
+                <div className="mt-16 text-center gsap-reveal">
+                  <Link to="/become-seller">
+                    <button className="px-8 py-4 bg-white text-indigo-600 font-bold rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl relative overflow-hidden seller-button">
+                      <span className="relative z-10">
+                        Đăng Ký Làm Người Bán
+                      </span>
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -642,13 +626,13 @@ function Home() {
       </div>
 
       {/* News/Blog Section - Clean white */}
-      <div className="py-20 px-4 md:px-8 bg-slate-50 dark:bg-gray-900 gsap-reveal">
+      <div className="py-32 px-4 md:px-8 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1 bg-indigo-600 text-white text-sm font-semibold rounded-full mb-4">
+            <span className="inline-block px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-sm font-semibold rounded-full mb-4 shadow-lg">
               Blog
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-indigo-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
               Tin Tức Mới Nhất
             </h2>
           </div>
@@ -684,7 +668,7 @@ function Home() {
                 {dataNews.map((news, index) => (
                   <div
                     key={index}
-                    className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:scale-105"
+                    className="bg-gray-800 rounded-xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:scale-105"
                     data-aos="fade-up"
                     data-aos-delay={index * 100}>
                     <Link to={`/news/${news.slug}`} className="block h-full">
@@ -730,10 +714,10 @@ function Home() {
       </div>
 
       {/* FAQ Section - Soft blue */}
-      <section className="py-20 px-4 bg-indigo-50/60 dark:bg-gray-800 gsap-reveal">
-        <div className="container mx-auto max-w-5xl">
+      <section className="py-32 px-4 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
+        <div className="container mx-auto max-w-5xl relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
               Câu Hỏi Thường Gặp
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300">
@@ -746,7 +730,7 @@ function Home() {
             {/* FAQ Item 1 */}
             <div
               ref={(el) => (faqItemsRef.current[0] = el)}
-              className="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden"
+              className="bg-gray-700 rounded-xl shadow-md overflow-hidden"
               data-aos="fade-up">
               <details className="group">
                 <summary className="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-gray-900 dark:text-white">
@@ -779,7 +763,7 @@ function Home() {
             {/* FAQ Item 2 */}
             <div
               ref={(el) => (faqItemsRef.current[1] = el)}
-              className="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden"
+              className="bg-gray-700 rounded-xl shadow-md overflow-hidden"
               data-aos="fade-up"
               data-aos-delay="100">
               <details className="group">
@@ -813,7 +797,7 @@ function Home() {
             {/* FAQ Item 3 */}
             <div
               ref={(el) => (faqItemsRef.current[2] = el)}
-              className="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden"
+              className="bg-gray-700 rounded-xl shadow-md overflow-hidden"
               data-aos="fade-up"
               data-aos-delay="200">
               <details className="group">
@@ -849,7 +833,7 @@ function Home() {
             {/* FAQ Item 4 */}
             <div
               ref={(el) => (faqItemsRef.current[3] = el)}
-              className="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden"
+              className="bg-gray-700 rounded-xl shadow-md overflow-hidden"
               data-aos="fade-up"
               data-aos-delay="300">
               <details className="group">
@@ -884,7 +868,7 @@ function Home() {
             {/* FAQ Item 5 */}
             <div
               ref={(el) => (faqItemsRef.current[4] = el)}
-              className="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden"
+              className="bg-gray-700 rounded-xl shadow-md overflow-hidden"
               data-aos="fade-up"
               data-aos-delay="400">
               <details className="group">
@@ -921,9 +905,9 @@ function Home() {
       {/* Newsletter - White with shadow */}
       <section
         ref={newsletterRef}
-        className="py-16 px-4 bg-white dark:bg-gray-900 gsap-reveal">
-        <div className="container mx-auto max-w-4xl text-center">
-          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-10 border border-gray-100 dark:border-gray-700">
+        className="py-32 px-4 bg-gradient-to-br from-gray-800 to-gray-900 relative">
+        <div className="container mx-auto max-w-4xl text-center relative z-10">
+          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl shadow-2xl p-16 border border-gray-700/50 backdrop-blur-xl">
             <h2
               className="text-3xl font-bold mb-6 text-gray-900 dark:text-white"
               data-aos="fade-up">
@@ -969,71 +953,51 @@ function Home() {
 
       {/* Custom CSS for Sliders and 3D effects */}
       <style>{`
-        /* Reduce box-shadow complexity for better performance */
-        .shadow-xl {
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-            0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        /* Enhanced shadows and glows */
+        .shadow-glow {
+          box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
         }
 
-        /* Optimize transition properties to only animate what's needed */
-        .transition-all {
-          transition-property: transform, box-shadow, opacity;
-          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        .hover-glow:hover {
+          box-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
         }
 
-        /* Use will-change only where absolutely necessary */
-        .hover:scale-105:hover {
-          will-change: transform;
+        /* Gradient borders */
+        .gradient-border {
+          position: relative;
+          background: linear-gradient(to right, #4f46e5, #7c3aed);
+          padding: 1px;
+          border-radius: 0.75rem;
         }
 
-        /* Optimize slider dots */
-        .seller-benefits-slider .slick-dots li button:before {
-          font-size: 12px;
+        .gradient-border::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 0.75rem;
+          padding: 2px;
+          background: linear-gradient(to right, #4f46e5, #7c3aed);
+          -webkit-mask: 
+            linear-gradient(#fff 0 0) content-box, 
+            linear-gradient(#fff 0 0);
+          mask: 
+            linear-gradient(#fff 0 0) content-box, 
+            linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+        }
+
+        /* Enhanced button styles */
+        .button-glow {
+          position: relative;
+          background: linear-gradient(145deg, #3730a3, #4f46e5);
           color: white;
-          opacity: 0.5;
+          border: none;
+          overflow: hidden;
         }
 
-        .seller-benefits-slider .slick-dots li.slick-active button:before {
-          opacity: 1;
-          color: white;
-        }
-
-        /* Hide arrows on mobile for better performance */
-        @media (max-width: 640px) {
-          .seller-benefits-slider .slick-prev,
-          .seller-benefits-slider .slick-next {
-            display: none !important;
-          }
-        }
-
-        /* 3D Transforms */
-        .perspective-1000 {
-          perspective: 1000px;
-        }
-
-        .transform-style-3d {
-          transform-style: preserve-3d;
-        }
-
-        /* Floating animation for hero particles */
-        @keyframes float-0 {
-          0%, 100% { transform: translateY(0) rotate(0); }
-          50% { transform: translateY(-20px) rotate(5deg); }
-        }
-        
-        @keyframes float-1 {
-          0%, 100% { transform: translateY(0) rotate(0); }
-          50% { transform: translateY(-15px) rotate(-5deg); }
-        }
-        
-        @keyframes float-2 {
-          0%, 100% { transform: translateY(0) rotate(0); }
-          50% { transform: translateY(-25px) rotate(10deg); }
-        }
-
-        /* Button hover effect */
-        .seller-button:before {
-          content: "";
+        .button-glow::before {
+          content: '';
           position: absolute;
           top: 0;
           left: -100%;
@@ -1048,30 +1012,75 @@ function Home() {
           transition: 0.5s;
         }
 
-        .seller-button:hover:before {
+        .button-glow:hover::before {
           left: 100%;
         }
 
-        /* Service card 3D effect styles */
+        /* Enhanced card styles */
+        .card-hover {
+          transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+          transform: translateY(-5px);
+        }
+
+        /* Glass effect */
+        .glass-effect {
+          background: rgba(17, 24, 39, 0.7);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Enhanced scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #1f2937;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #4f46e5;
+          border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #6366f1;
+        }
+
+        /* Animated background gradient */
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        .animated-gradient {
+          background: linear-gradient(-45deg, #3730a3, #4f46e5, #7c3aed, #6366f1);
+          background-size: 400% 400%;
+          animation: gradient 15s ease infinite;
+        }
+
+        /* Enhanced card transitions */
         .service-card {
-          backface-visibility: hidden;
-          transform: translate3d(0, 0, 0);
-          will-change: transform, box-shadow;
+          transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        /* Scroll progress indicator */
-        :root {
-          --scroll-progress: 0%;
+
+        .service-card:hover {
+          transform: translateY(-5px) scale(1.02);
         }
-        
-        .scroll-progress-bar {
-          position: fixed;
-          top: 0;
-          left: 0;
-          height: 4px;
-          background: linear-gradient(to right, #6366f1, #a855f7);
-          width: var(--scroll-progress);
-          z-index: 1000;
+
+        /* Floating animation for particles */
+        .floating {
+          animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+          0% { transform: translate(0, 0px); }
+          50% { transform: translate(0, 15px); }
+          100% { transform: translate(0, -0px); }
         }
       `}</style>
     </div>

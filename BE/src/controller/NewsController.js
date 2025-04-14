@@ -139,5 +139,47 @@ const NewsController = {
       return res.status(500).json({ message: "Server Error" });
     }
   },
+  updateNews: async (req, res, next) => {
+    try {
+      const newsId = req.params.id;
+      const updatedData = req.body;
+      console.log(updatedData);
+
+      // Kiểm tra xem tin tức có tồn tại không
+      const existingNews = await News.findById(newsId);
+      if (!existingNews) {
+        return res.status(404).json({ msg: "Không tìm thấy tin tức" });
+      }
+
+      // Kiểm tra xem có thay đổi ảnh đại diện không
+      if (
+        updatedData.img_cover &&
+        existingNews.img_cover[0].id &&
+        updatedData.img_cover[0].id !== existingNews.img_cover[0].id
+      ) {
+        // Xóa ảnh cũ trên Cloudinary nếu ảnh được thay đổi và ảnh cũ là upload (không phải URL)
+        if (existingNews.img_cover[0].id.startsWith("trungduc/")) {
+          await services.delImg(existingNews.img_cover[0].id);
+        }
+      }
+
+      // Cập nhật tin tức
+      const updatedNews = await News.findByIdAndUpdate(
+        newsId,
+        updatedData,
+        { new: true } // Trả về document đã được cập nhật
+      );
+
+      return res.status(200).json({
+        msg: "Cập nhật tin tức thành công",
+        news: updatedNews,
+      });
+    } catch (error) {
+      console.error("Lỗi cập nhật tin tức:", error);
+      return res
+        .status(500)
+        .json({ msg: "Lỗi hệ thống", error: error.message });
+    }
+  },
 };
 module.exports = NewsController;
