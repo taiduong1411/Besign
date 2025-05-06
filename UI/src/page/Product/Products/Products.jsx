@@ -85,12 +85,16 @@ function Products() {
     const matchesSearch = product.product_name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
+
+    // Xử lý trường hợp product_category là mảng hoặc chuỗi
     const matchesCategory =
-      filters.product_category == "all" ||
-      product.product_category == filters.product_category;
+      filters.product_category === "all" ||
+      (Array.isArray(product.product_category)
+        ? product.product_category.includes(filters.product_category)
+        : product.product_category === filters.product_category);
 
     const matchesRating =
-      filters.rating == "all" ||
+      filters.rating === "all" ||
       (product.rating || 0) >= parseInt(filters.rating);
 
     return matchesSearch && matchesCategory && matchesRating;
