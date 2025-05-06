@@ -315,7 +315,7 @@ function Home() {
             <span className="inline-block px-4 py-1 bg-indigo-600 text-white text-sm font-semibold rounded-full mb-4">
               Tại Sao Chọn Chúng Tôi?
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-indigo-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-bold text-white">
               Tại Sao Khách Hàng Luôn Tin Tưởng Chúng Tôi
             </h2>
           </div>
@@ -652,7 +652,7 @@ function Home() {
                   d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
                 />
               </svg>
-              <p className="mt-4 text-gray-600 dark:text-gray-300">
+              <p className="mt-4 text-gray-700 dark:text-gray-300">
                 Hiện tại, chưa có tin tức nào. Vui lòng để lại thông tin của bạn{" "}
                 <Link
                   to="/contact-us"
@@ -680,17 +680,17 @@ function Home() {
                         />
                       </div>
                       <div className="p-6">
-                        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
+                        <div className="flex items-center text-sm text-gray-400 mb-3">
                           <FaCalendarAlt className="mr-2" />
                           <span>{new Date().toLocaleDateString()}</span>
                         </div>
-                        <h3 className="text-lg font-bold text-white-900 dark:text-white mb-3 line-clamp-2">
+                        <h3 className="text-lg font-bold text-white mb-3 line-clamp-2">
                           {news.title}
                         </h3>
-                        <p className="text-gray-600 dark:text-gray-300 line-clamp-3">
+                        <p className="text-gray-300 line-clamp-3">
                           {news.sub_content}
                         </p>
-                        <div className="mt-4 flex items-center text-indigo-600 dark:text-indigo-400 font-medium">
+                        <div className="mt-4 flex items-center text-indigo-400 font-medium">
                           Xem thêm
                           <FaArrowRight className="ml-2 h-3 w-3" />
                         </div>
@@ -720,7 +720,7 @@ function Home() {
             <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
               Câu Hỏi Thường Gặp
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
+            <p className="text-lg text-gray-300">
               Tìm câu trả lời cho các câu hỏi phổ biến về thị trường nghệ thuật
               của chúng tôi
             </p>
@@ -733,7 +733,7 @@ function Home() {
               className="bg-gray-700 rounded-xl shadow-md overflow-hidden"
               data-aos="fade-up">
               <details className="group">
-                <summary className="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-gray-900 dark:text-white">
+                <summary className="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-white">
                   Làm thế nào để mua tác phẩm nghệ thuật?
                   <svg
                     className="w-5 h-5 text-indigo-600 dark:text-indigo-400 group-open:rotate-180 transition-transform duration-300"
@@ -748,7 +748,7 @@ function Home() {
                     />
                   </svg>
                 </summary>
-                <div className="px-6 pb-6 text-gray-600 dark:text-gray-300">
+                <div className="px-6 pb-6 text-gray-300">
                   <p>
                     Mua tác phẩm nghệ thuật rất đơn giản! Duyệt qua thị trường
                     của chúng tôi, chọn thiết kế bạn thích, thêm vào giỏ hàng và
@@ -767,7 +767,7 @@ function Home() {
               data-aos="fade-up"
               data-aos-delay="100">
               <details className="group">
-                <summary className="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-gray-900 dark:text-white">
+                <summary className="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-white">
                   Có những loại tác phẩm nghệ thuật nào?
                   <svg
                     className="w-5 h-5 text-indigo-600 dark:text-indigo-400 group-open:rotate-180 transition-transform duration-300"
@@ -782,7 +782,7 @@ function Home() {
                     />
                   </svg>
                 </summary>
-                <div className="px-6 pb-6 text-gray-600 dark:text-gray-300">
+                <div className="px-6 pb-6 text-gray-300">
                   <p>
                     Thị trường của chúng tôi có nhiều loại tác phẩm nghệ thuật
                     kỹ thuật số, bao gồm minh họa, tranh vẽ kỹ thuật số, nhiếp
@@ -801,7 +801,7 @@ function Home() {
               data-aos="fade-up"
               data-aos-delay="200">
               <details className="group">
-                <summary className="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-gray-900 dark:text-white">
+                <summary className="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-white">
                   Làm thế nào để trở thành người bán?
                   <svg
                     className="w-5 h-5 text-indigo-600 dark:text-indigo-400 group-open:rotate-180 transition-transform duration-300"
@@ -816,7 +816,7 @@ function Home() {
                     />
                   </svg>
                 </summary>
-                <div className="px-6 pb-6 text-gray-600 dark:text-gray-300">
+                <div className="px-6 pb-6 text-gray-300">
                   <p>
                     Để trở thành người bán, hãy tạo một tài khoản và nhấp vào
                     &ldquo;Trở thành người bán&rdquo; trong bảng điều khiển của
@@ -837,7 +837,7 @@ function Home() {
               data-aos="fade-up"
               data-aos-delay="300">
               <details className="group">
-                <summary className="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-gray-900 dark:text-white">
+                <summary className="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-white">
                   Quyền sử dụng cho tác phẩm nghệ thuật đã mua là gì?
                   <svg
                     className="w-5 h-5 text-indigo-600 dark:text-indigo-400 group-open:rotate-180 transition-transform duration-300"
@@ -852,7 +852,7 @@ function Home() {
                     />
                   </svg>
                 </summary>
-                <div className="px-6 pb-6 text-gray-600 dark:text-gray-300">
+                <div className="px-6 pb-6 text-gray-300">
                   <p>
                     Mỗi tác phẩm nghệ thuật đi kèm với thông tin giấy phép cụ
                     thể do người bán cung cấp. Hầu hết các thiết kế bao gồm giấy
@@ -872,7 +872,7 @@ function Home() {
               data-aos="fade-up"
               data-aos-delay="400">
               <details className="group">
-                <summary className="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-gray-900 dark:text-white">
+                <summary className="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-white">
                   Thanh toán được xử lý như thế nào?
                   <svg
                     className="w-5 h-5 text-indigo-600 dark:text-indigo-400 group-open:rotate-180 transition-transform duration-300"
@@ -887,7 +887,7 @@ function Home() {
                     />
                   </svg>
                 </summary>
-                <div className="px-6 pb-6 text-gray-600 dark:text-gray-300">
+                <div className="px-6 pb-6 text-gray-300">
                   <p>
                     Chúng tôi cung cấp xử lý thanh toán an toàn thông qua các
                     thẻ tín dụng chính, PayPal và các phương thức thanh toán
@@ -909,12 +909,12 @@ function Home() {
         <div className="container mx-auto max-w-4xl text-center relative z-10">
           <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl shadow-2xl p-16 border border-gray-700/50 backdrop-blur-xl">
             <h2
-              className="text-3xl font-bold mb-6 text-gray-900 dark:text-white"
+              className="text-3xl font-bold mb-6 text-white"
               data-aos="fade-up">
               Luôn Được Truyền Cảm Hứng
             </h2>
             <p
-              className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto"
+              className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto"
               data-aos="fade-up"
               data-aos-delay="100">
               Đăng ký bản tin của chúng tôi để nhận được các bộ sưu tập được
@@ -938,7 +938,7 @@ function Home() {
               </button>
             </form>
             <p
-              className="text-sm text-gray-500 dark:text-gray-400 mt-4"
+              className="text-sm text-gray-400 mt-4"
               data-aos="fade-up"
               data-aos-delay="300">
               Chúng tôi tôn trọng quyền riêng tư của bạn. Hủy đăng ký bất cứ lúc
