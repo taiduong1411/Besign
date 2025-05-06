@@ -684,7 +684,7 @@ function Home() {
                           <FaCalendarAlt className="mr-2" />
                           <span>{new Date().toLocaleDateString()}</span>
                         </div>
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 line-clamp-2">
+                        <h3 className="text-lg font-bold text-white-900 dark:text-white mb-3 line-clamp-2">
                           {news.title}
                         </h3>
                         <p className="text-gray-600 dark:text-gray-300 line-clamp-3">

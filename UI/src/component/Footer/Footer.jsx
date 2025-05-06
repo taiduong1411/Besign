@@ -156,7 +156,7 @@ export default function Footer() {
                   />
                 </svg>
                 <span className="text-gray-400">
-                  17B, Lê Thị Hồng Gấm, Phường 6, TP. Mỹ Tho, Tiền Giang
+                  CẦU GIẤY, HÀ NỘI
                 </span>
               </li>
               <li className="flex items-center">
@@ -173,9 +173,9 @@ export default function Footer() {
                   />
                 </svg>
                 <a
-                  href="tel:+84336620023"
+                  href="tel:+84865421607"
                   className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
-                  033 66 200 23
+                  086 54 216 07
                 </a>
               </li>
               <li className="flex items-center">
@@ -192,9 +192,9 @@ export default function Footer() {
                   />
                 </svg>
                 <a
-                  href="mailto:trungducevent@gmail.com"
+                  href="mailto:xuanthuy.dgtmkt@gmail.com"
                   className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
-                  trungducevent@gmail.com
+                  xuanthuy.dgtmkt@gmail.com
                 </a>
               </li>
             </ul>
@@ -204,7 +204,7 @@ export default function Footer() {
         {/* Social media */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-gray-800">
           <p className="text-sm text-gray-500 mb-4 md:mb-0">
-            © {new Date().getFullYear()} ArtMarket. Tất cả quyền được bảo lưu.
+            © {new Date().getFullYear()} BESIGN. Tất cả quyền được bảo lưu.
           </p>
           <div className="flex space-x-6">
             {[

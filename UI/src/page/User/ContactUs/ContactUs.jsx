@@ -91,8 +91,8 @@ function ContactUs() {
         </svg>
       ),
       title: "Điện thoại",
-      content: "+84 33 66 200 23",
-      action: "tel:+84336620023",
+      content: "+84 86 54 216 07",
+      action: "tel:+84865421607",
     },
     {
       icon: (
@@ -110,8 +110,8 @@ function ContactUs() {
         </svg>
       ),
       title: "Email",
-      content: "trungducevent@gmail.com",
-      action: "mailto:trungducevent@gmail.com",
+      content: "xuanthuy.dgtmkt@gmail.com",
+      action: "mailto:xuanthuy.dgtmkt@gmail.com",
     },
     {
       icon: (
@@ -134,8 +134,8 @@ function ContactUs() {
         </svg>
       ),
       title: "Trụ sở chính",
-      content: "17B, Lê Thị Hồng Gấm, Phường 6, TP. Mỹ Tho, Tiền Giang",
-      action: "https://maps.app.goo.gl/gnsN9U5N13P5wJZh6",
+      content: "CẦU GIẤY, HÀ NỘI",
+      action: "https://maps.app.goo.gl/8WB6PDJSRBAQ15r46",
     },
     {
       icon: (
