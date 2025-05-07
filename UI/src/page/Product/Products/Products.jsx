@@ -93,9 +93,10 @@ function Products() {
         ? product.product_category.includes(filters.product_category)
         : product.product_category === filters.product_category);
 
+    // Sử dụng averageRating để filter
     const matchesRating =
       filters.rating === "all" ||
-      (product.rating || 0) >= parseInt(filters.rating);
+      (product.averageRating || 0) >= parseInt(filters.rating);
 
     return matchesSearch && matchesCategory && matchesRating;
   });

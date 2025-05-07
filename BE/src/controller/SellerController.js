@@ -404,8 +404,11 @@ const SellerController = {
   getOrders: async (req, res) => {
     const token = jwt_decode.decodeToken(req.headers["authorization"]);
     const seller = await Accounts.findOne({ _id: token._id });
-    const product = await Products.findOne({ seller_email: seller.email });
-    let orders = await Order.find({ productId: product._id });
+    // Lấy tất cả sản phẩm của seller
+    const products = await Products.find({ seller_email: seller.email });
+    const productIds = products.map((p) => p._id);
+    // Lấy tất cả đơn hàng có productId thuộc về seller này
+    let orders = await Order.find({ productId: { $in: productIds } });
     orders = await Promise.all(
       orders.map(async (order) => {
         const product = await Products.findById(order.productId);
